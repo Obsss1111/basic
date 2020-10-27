@@ -43,8 +43,8 @@ class Music extends \yii\db\ActiveRecord
             [['NameMusic'], 'string', 'max' => 30],
             [['IdMusic'], 'unique'],
             [['IdUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['IdUser' => 'IdUser']],
-            [['IdAlbum'], 'exist', 'skipOnError' => true, 'targetClass' => Album::className(), 'targetAttribute' => ['IdAlbum' => 'IdAlbum']],
-            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autor::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
+            [['IdAlbum'], 'exist', 'skipOnError' => true, 'targetClass' => Albums::className(), 'targetAttribute' => ['IdAlbum' => 'IdAlbum']],
+            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autors::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
             [['IdMusicPath'], 'exist', 'skipOnError' => true, 'targetClass' => Musicpath::className(), 'targetAttribute' => ['IdMusicPath' => 'IdMusicPath']],
             [['IdMusicStyle'], 'exist', 'skipOnError' => true, 'targetClass' => Musicstyle::className(), 'targetAttribute' => ['IdMusicStyle' => 'IdMusicStyle']],
         ];

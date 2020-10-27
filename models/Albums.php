@@ -36,7 +36,7 @@ class Albums extends \yii\db\ActiveRecord
             [['IdAlbum', 'IdAutor', 'IdUser'], 'integer'],
             [['NameAlbum'], 'string', 'max' => 30],
             [['IdAlbum'], 'unique'],
-            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autor::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
+            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autors::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
             [['IdUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['IdUser' => 'IdUser']],
         ];
     }
