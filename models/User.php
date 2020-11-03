@@ -3,6 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+use yii\web\IdentityInterface;
+use \yii\base\BaseObject;
 
 /**
  * This is the model class for table "user".
@@ -21,8 +25,13 @@ use Yii;
  * @property Music[] $musics
  * @property Musicstyle[] $musicstyles
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord implements IdentityInterface 
 {
+    public $id;
+    public $username;
+    public $password;
+    public $authKey;
+    public $accessToken;
     /**
      * {@inheritdoc}
      */
@@ -102,4 +111,76 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Musicstyle::className(), ['IdUser' => 'IdUser']);
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
+
+        return null;
+    }
+    
+    public static function findIdentity($id)
+    {
+        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+    }
+
+    /**
+     * Поиск по пользователю
+     * @return User 
+     */
+    public static function findByLogin($username)
+    {
+        $user = User::find()->where(["Login" => $username])->one();        
+        if ($user) {
+            foreach ($user as $key => $value) {            
+                if ($user["Login"] == $username) {
+                    return new static($user);
+                } 
+            }
+        }        
+        return null;
+    }
+    
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {     
+        var_dump($this->Password);
+        return $this->Password === $password; 
+    }
+    
 }
+
