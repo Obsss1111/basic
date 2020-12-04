@@ -10,9 +10,13 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\EntryForm;
+use app\models\User;
+use app\models\SignupForm;
+use Error;
 
 class SiteController extends Controller
 {
+    
     /**
      * {@inheritdoc}
      */
@@ -21,12 +25,20 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['login', 'logout', 'signup'],
+                'denyCallback' => function ($rule, $action) {
+                    throw new \Exception('У вас нет доступа к этой странице');
+                },
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login', 'signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
             ],
@@ -142,5 +154,36 @@ class SiteController extends Controller
             // либо страница отображается первый раз, либо есть ошибка в данных
             return $this->render('entry', ['model' => $model]);
         }
+    }
+    
+    public function actionAddAdmin() {
+        $model = User::find()->where(['username' => 'demo'])->one();
+        if (empty($model)) {
+            $user = new User();
+            $user->username = 'demo';
+            $user->email = 'demo@list.ru';
+            $user->setPassword('demo');
+            $user->generateAuthKey();
+            if ($user->save(false)) {
+                echo 'good';
+            }
+        }
+    }
+    
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+ 
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
+        }
+ 
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
 }
