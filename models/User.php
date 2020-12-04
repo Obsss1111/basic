@@ -3,41 +3,43 @@
 namespace app\models;
 
 use Yii;
+use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
-use yii\db\ActiveQuery;
 use yii\web\IdentityInterface;
-use \yii\base\BaseObject;
 
 /**
  * This is the model class for table "user".
  *
- * @property int $IdUser
- * @property string|null $Login
- * @property string|null $Password
- * @property string|null $FavoriteMusic
- * @property string|null $FavoriteAlbum
- * @property string|null $FavoriteStyleMusic
- * @property string|null $FavoriteAutor
- * @property string|null $FavoriteStyle
- *
- * @property Album[] $albums
- * @property Autor[] $autors
- * @property Music[] $musics
- * @property Musicstyle[] $musicstyles
+ * @property int $id
+ * @property string $username
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property string $accessToken
+ * @property string $password write-only password
+ * @property string $email
+ * @property string $password_reset_token 
+ * @property int $status 
+ * @property int $created_at
+ * @property int $updated_at
  */
-class User extends ActiveRecord implements IdentityInterface 
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+class User extends ActiveRecord implements IdentityInterface
+{       
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'user';
+    }
+    
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**
@@ -46,12 +48,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['IdUser'], 'required'],
-            [['IdUser'], 'integer'],
-            [['Login', 'Password', 'FavoriteStyleMusic', 'FavoriteAutor', 'FavoriteStyle'], 'string', 'max' => 30],
-            [['FavoriteMusic'], 'string', 'max' => 1024],
-            [['FavoriteAlbum'], 'string', 'max' => 256],
-            [['IdUser'], 'unique'],
+            [['id'], 'required'],
+            [['id'], 'integer'],
+            [['id'], 'unique'], 
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -61,113 +62,45 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'IdUser' => 'Id User',
-            'Login' => 'Login',
-            'Password' => 'Password',
-            'FavoriteMusic' => 'Favorite Music',
-            'FavoriteAlbum' => 'Favorite Album',
-            'FavoriteStyleMusic' => 'Favorite Style Music',
-            'FavoriteAutor' => 'Favorite Autor',
-            'FavoriteStyle' => 'Favorite Style',
+            'id' => 'Id User',
+            'username' => 'Login',
+            'password' => 'Password',
         ];
-    }
-
-    /**
-     * Gets query for [[Albums]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAlbums()
-    {
-        return $this->hasMany(Album::className(), ['IdUser' => 'IdUser']);
-    }
-
-    /**
-     * Gets query for [[Autors]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAutors()
-    {
-        return $this->hasMany(Autor::className(), ['IdUser' => 'IdUser']);
-    }
-
-    /**
-     * Gets query for [[Musics]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMusics()
-    {
-        return $this->hasMany(Music::className(), ['IdUser' => 'IdUser']);
-    }
-
-    /**
-     * Gets query for [[Musicstyles]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMusicstyles()
-    {
-        return $this->hasMany(Musicstyle::className(), ['IdUser' => 'IdUser']);
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
+    }      
     
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
-    /**
-     * Поиск по пользователю
-     * @return User 
-     */
-    public static function findByLogin($username)
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        $user = User::find()->where(["Login" => $username])->one();        
-        if ($user) {
-            foreach ($user as $key => $value) {            
-                if ($user["Login"] == $username) {
-                    return new static($user);
-                } 
-            }
-        }        
-        return null;
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+    
+   /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
     
     /**
@@ -176,10 +109,23 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {     
-        var_dump($this->Password);
-        return $this->Password === $password; 
+     public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+    }
+    
+    
+    public function setPassword($password)
+    {
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    }
+ 
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
     }
     
 }
