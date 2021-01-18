@@ -29,7 +29,7 @@ class SignupForm extends Model
             //['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот почтовый ящик уже использвуется.'],
+            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'Этот почтовый ящик уже используется.'],
             ['password', 'required'],
             ['password', 'string', 'min' => 4],
         ];
