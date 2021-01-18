@@ -13,21 +13,26 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1
+        ],
     ]); ?>
 
-    <?= $form->field($model, 'IdMusic') ?>
+    <?= $form->field($model, 'id_music') ?>
 
-    <?= $form->field($model, 'IdMusicPath') ?>
+    <?= $form->field($model, 'name_music') ?>
 
-    <?= $form->field($model, 'IdMusicStyle') ?>
+    <?= $form->field($model, 'name_style') ?>
 
-    <?= $form->field($model, 'IdAutor') ?>
+    <?= $form->field($model, 'duration') ?>
 
-    <?= $form->field($model, 'IdAlbum') ?>
+    <?= $form->field($model, 'autor_name_autor') ?>
 
-    <?php // echo $form->field($model, 'IdUser') ?>
+    <?php // echo $form->field($model, 'path_music_id_path') ?>
 
-    <?php // echo $form->field($model, 'NameMusic') ?>
+    <?php // echo $form->field($model, 'music_style_id_style') ?>
+
+    <?php // echo $form->field($model, 'autor_id_autor') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Music;
+use app\models\PathMusic;
 
 /**
  * MusicSearch represents the model behind the search form of `app\models\Music`.
@@ -17,8 +18,8 @@ class MusicSearch extends Music
     public function rules()
     {
         return [
-            [['IdMusic', 'IdMusicPath', 'IdMusicStyle', 'IdAutor', 'IdAlbum', 'IdUser'], 'integer'],
-            [['NameMusic'], 'safe'],
+            [['id_music', 'path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
+            [['name_music', 'name_style', 'duration', 'autor_name_autor'], 'safe'],
         ];
     }
 
@@ -51,23 +52,35 @@ class MusicSearch extends Music
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+//             uncomment the following line if you do not want to return any records when validation fails
+//             $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'IdMusic' => $this->IdMusic,
-            'IdMusicPath' => $this->IdMusicPath,
-            'IdMusicStyle' => $this->IdMusicStyle,
-            'IdAutor' => $this->IdAutor,
-            'IdAlbum' => $this->IdAlbum,
-            'IdUser' => $this->IdUser,
+            'id_music' => $this->id_music,
+            'duration' => $this->duration,
+            'path_music_id_path' => $this->path_music_id_path,
+            'music_style_id_style' => $this->music_style_id_style,
+            'autor_id_autor' => $this->autor_id_autor,
         ]);
 
-        $query->andFilterWhere(['like', 'NameMusic', $this->NameMusic]);
+        $query->andFilterWhere(['like', 'name_music', $this->name_music])
+            ->andFilterWhere(['like', 'name_style', $this->name_style])
+            ->andFilterWhere(['like', 'autor_name_autor', $this->autor_name_autor]);
 
         return $dataProvider;
+    }
+    /**
+     * Находит путь файла
+     * @param integer $id
+     */
+    public function findPathMusicById($id) {
+        $model = new PathMusic();
+        $model->find()->where(['id_path' => $id])->one();
+        if ($model) {
+            return $model->path;
+        }
     }
 }

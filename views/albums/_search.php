@@ -18,13 +18,13 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'IdAlbum') ?>
+    <?= $form->field($model, 'id_album') ?>
 
-    <?= $form->field($model, 'IdAutor') ?>
+    <?= $form->field($model, 'name_album') ?>
 
-    <?= $form->field($model, 'IdUser') ?>
+    <?= $form->field($model, 'autor_id_autor') ?>
 
-    <?= $form->field($model, 'NameAlbum') ?>
+    <?= $form->field($model, 'music_id_music') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -7,20 +7,21 @@ use Yii;
 /**
  * This is the model class for table "music".
  *
- * @property int $IdMusic
- * @property int|null $IdMusicPath
- * @property int|null $IdMusicStyle
- * @property int|null $IdAutor Index
- * @property int|null $IdAlbum
- * @property int|null $IdUser
- * @property string|null $NameMusic
+ * @property int $id_music
+ * @property string $name_music
+ * @property string|null $name_style
+ * @property string $duration
+ * @property string|null $autor_name_autor
+ * @property int|null $path_music_id_path
+ * @property int|null $music_style_id_style
+ * @property int|null $autor_id_autor
  *
- * @property User $idUser
- * @property Album $idAlbum
- * @property Autor $idAutor
- * @property Musicpath $idMusicPath
- * @property Musicstyle $idMusicStyle
- * @property Musicpath[] $musicpaths
+ * @property Albums[] $albums
+ * @property AutorHasMusic[] $autorHasMusics
+ * @property Autor[] $autorIdAutors
+ * @property FavoriteMusic[] $favoriteMusics
+ * @property PathMusic $pathMusicIdPath
+ * @property MusicStyle $musicStyleIdStyle
  */
 class Music extends \yii\db\ActiveRecord
 {
@@ -38,15 +39,17 @@ class Music extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['IdMusic'], 'required'],
-            [['IdMusic', 'IdMusicPath', 'IdMusicStyle', 'IdAutor', 'IdAlbum', 'IdUser'], 'integer'],
-            [['NameMusic'], 'string', 'max' => 30],
-            [['IdMusic'], 'unique'],
-            [['IdUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['IdUser' => 'IdUser']],
-            [['IdAlbum'], 'exist', 'skipOnError' => true, 'targetClass' => Albums::className(), 'targetAttribute' => ['IdAlbum' => 'IdAlbum']],
-            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autors::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
-            [['IdMusicPath'], 'exist', 'skipOnError' => true, 'targetClass' => MusicPath::className(), 'targetAttribute' => ['IdMusicPath' => 'IdMusicPath']],
-            [['IdMusicStyle'], 'exist', 'skipOnError' => true, 'targetClass' => MusicStyle::className(), 'targetAttribute' => ['IdMusicStyle' => 'IdMusicStyle']],
+            [['name_music', 'duration'], 'required'],
+            [['duration'], 'safe'],
+            [['path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
+            [['name_music', 'autor_name_autor'], 'string', 'max' => 45],
+            [['name_style'], 'string', 'max' => 64],
+            [['music_style_id_style'], 'unique'],
+            [['path_music_id_path'], 'unique'],
+            [['autor_id_autor'], 'unique'],
+            [['autor_name_autor'], 'unique'],
+            [['path_music_id_path'], 'exist', 'skipOnError' => true, 'targetClass' => PathMusic::className(), 'targetAttribute' => ['path_music_id_path' => 'id_path']],
+            [['music_style_id_style'], 'exist', 'skipOnError' => true, 'targetClass' => MusicStyle::className(), 'targetAttribute' => ['music_style_id_style' => 'id_style']],
         ];
     }
 
@@ -56,73 +59,83 @@ class Music extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'IdMusic' => 'Id Music',
-            'IdMusicPath' => 'Id Music Path',
-            'IdMusicStyle' => 'Id Music Style',
-            'IdAutor' => 'Index',
-            'IdAlbum' => 'Id Album',
-            'IdUser' => 'Id User',
-            'NameMusic' => 'Name Music',
+            'id_music' => 'Id трека',
+            'name_music' => 'Название',
+            'name_style' => 'Стиль',
+            'duration' => 'Время',
+            'autor_name_autor' => 'Исполнитель',
+            'path_music_id_path' => 'Id файлы',
+            'music_style_id_style' => 'Id стиля',
+            'autor_id_autor' => 'Id исп.',
         ];
     }
 
     /**
-     * Gets query for [[IdUser]].
+     * Gets query for [[Albums]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|AlbumsQuery
      */
-    public function getIdUser()
+    public function getAlbums()
     {
-        return $this->hasOne(User::className(), ['IdUser' => 'IdUser']);
+        return $this->hasMany(Albums::className(), ['music_id_music' => 'id_music']);
     }
 
     /**
-     * Gets query for [[IdAlbum]].
+     * Gets query for [[AutorHasMusics]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|AutorHasMusicQuery
      */
-    public function getIdAlbum()
+    public function getAutorHasMusics()
     {
-        return $this->hasOne(Album::className(), ['IdAlbum' => 'IdAlbum']);
+        return $this->hasMany(AutorHasMusic::className(), ['music_id_music' => 'id_music']);
     }
 
     /**
-     * Gets query for [[IdAutor]].
+     * Gets query for [[AutorIdAutors]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|AutorQuery
      */
-    public function getIdAutor()
+    public function getAutorIdAutors()
     {
-        return $this->hasOne(Autor::className(), ['IdAutor' => 'IdAutor']);
+        return $this->hasMany(Autor::className(), ['id_autor' => 'autor_id_autor'])->viaTable('autor_has_music', ['music_id_music' => 'id_music']);
     }
 
     /**
-     * Gets query for [[IdMusicPath]].
+     * Gets query for [[FavoriteMusics]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|FavoriteMusicQuery
      */
-    public function getIdMusicPath()
+    public function getFavoriteMusics()
     {
-        return $this->hasOne(Musicpath::className(), ['IdMusicPath' => 'IdMusicPath']);
+        return $this->hasMany(FavoriteMusic::className(), ['music_id_music' => 'id_music']);
     }
 
     /**
-     * Gets query for [[IdMusicStyle]].
+     * Gets query for [[PathMusicIdPath]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|PathMusicQuery
      */
-    public function getIdMusicStyle()
+    public function getPathMusicIdPath()
     {
-        return $this->hasOne(Musicstyle::className(), ['IdMusicStyle' => 'IdMusicStyle']);
+        return $this->hasOne(PathMusic::className(), ['id_path' => 'path_music_id_path']);
     }
 
     /**
-     * Gets query for [[Musicpaths]].
+     * Gets query for [[MusicStyleIdStyle]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|MusicStyleQuery
      */
-    public function getMusicpaths()
+    public function getMusicStyleIdStyle()
     {
-        return $this->hasMany(Musicpath::className(), ['IdMusic' => 'IdMusic']);
+        return $this->hasOne(MusicStyle::className(), ['id_style' => 'music_style_id_style']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return MusicQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new MusicQuery(get_called_class());
     }
 }

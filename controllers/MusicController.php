@@ -8,6 +8,14 @@ use app\models\MusicSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
+use app\models\MusicQuery;
+use app\models\PathMusicQuery;
+use yii\filters\AccessControl;
+use app\models\AutorSearch;
+use app\models\AlbumsSearch;
+use app\models\FavoriteAlbumsSearch;
+use app\models\FavoriteMusicSearch;
 
 /**
  * MusicController implements the CRUD actions for Music model.
@@ -20,6 +28,25 @@ class MusicController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+//                'only' => ['login', 'logout', 'signup', 'index', 'view', 'create', 'update', 'delete'],
+//                'denyCallback' => function ($rule, $action) {
+//                    throw new \Exception('У вас нет доступа к этой странице');
+//                },
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login', 'signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -37,10 +64,29 @@ class MusicController extends Controller
     {
         $searchModel = new MusicSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
+        $searchModelAutor = new AutorSearch();
+        $dataProviderAutor = $searchModelAutor->search(Yii::$app->request->queryParams);
+        
+        $searchModelAlbum = new AlbumsSearch();
+        $dataProviderAlbum = $searchModelAlbum->search(Yii::$app->request->queryParams);
+        
+        $searchModelFavoriteAlbum = new FavoriteAlbumsSearch();
+        $dataProviderFavoriteAlbum = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $searchModelFavoriteMusic = new FavoriteMusicSearch();
+        $dataProviderFavoriteMusic = $searchModelFavoriteMusic->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProviderAutor' => $dataProviderAutor,
+            'filterModelAutor' => $searchModelAutor,
+            'dataProviderAlbum' => $dataProviderAlbum,
+            'filterModelAlbum' => $searchModelAlbum,
+            'dataProviderFavoriteAlbum' =>$dataProviderFavoriteAlbum,
+            'filterModelFavoriteAlbum' => $searchModelFavoriteAlbum,
+            'dataProviderFavoriteMusic' => $dataProviderFavoriteMusic,
+            'filterModelFavoriteMusic' => $searchModelFavoriteMusic,
         ]);
     }
 
@@ -67,7 +113,7 @@ class MusicController extends Controller
         $model = new Music();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->IdMusic]);
+            return $this->redirect(['view', 'id' => $model->id_music]);
         }
 
         return $this->render('create', [
@@ -87,7 +133,7 @@ class MusicController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->IdMusic]);
+            return $this->redirect(['view', 'id' => $model->id_music]);
         }
 
         return $this->render('update', [

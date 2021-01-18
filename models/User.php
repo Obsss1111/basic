@@ -13,15 +13,18 @@ use yii\web\IdentityInterface;
  *
  * @property int $id
  * @property string $username
- * @property string $password_hash
  * @property string $auth_key
- * @property string $accessToken
- * @property string $password write-only password
- * @property string $email
- * @property string $password_reset_token 
- * @property int $status 
- * @property int $created_at
- * @property int $updated_at
+ * @property string $password_hash
+ * @property string|null $passwork_reset_token
+ * @property string|null $email
+ * @property int $status
+ * @property string $created_at
+ * @property string $updated_at
+ * @property int|null $autor_id_autor
+ *
+ * @property FavoriteAlbums[] $favoriteAlbums
+ * @property FavoriteMusic $favoriteMusic
+ * @property FavoriteStyle[] $favoriteStyles
  */
 class User extends ActiveRecord implements IdentityInterface
 {       
@@ -53,6 +56,11 @@ class User extends ActiveRecord implements IdentityInterface
             [['id'], 'unique'], 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['username', 'auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
+            [['status', 'autor_id_autor'], 'integer'],
+            [['username', 'email'], 'string', 'max' => 32],
+            [['auth_key', 'password_hash', 'passwork_reset_token', 'created_at', 'updated_at'], 'string', 'max' => 64],
+            [['username'], 'unique'],
         ];
     }
 
@@ -63,7 +71,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'Id User',
-            'username' => 'Login',
+            'username' => 'Username',
             'password' => 'Password',
         ];
     }      
@@ -127,6 +135,36 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
-    
+    /**
+     * Gets query for [[FavoriteAlbums]].
+     *
+     * @return \yii\db\ActiveQuery|FavoriteAlbumsQuery
+     */
+    public function getFavoriteAlbums()
+    {
+        return $this->hasMany(FavoriteAlbums::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[FavoriteMusic]].
+     *
+     * @return \yii\db\ActiveQuery|FavoriteMusicQuery
+     */
+    public function getFavoriteMusic()
+    {
+        return $this->hasOne(FavoriteMusic::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[FavoriteStyles]].
+     *
+     * @return \yii\db\ActiveQuery|FavoriteStyleQuery
+     */
+    public function getFavoriteStyles()
+    {
+        return $this->hasMany(FavoriteStyle::className(), ['user_id' => 'id']);
+    }
+
+
 }
 

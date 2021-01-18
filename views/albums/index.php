@@ -3,39 +3,41 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\grid\DataColumn;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\AlbumsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Albums';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="albums-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Albums', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+   
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'layout' => "{items}\n{pager}",
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'IdAlbum',
-            'IdAutor',
-            'IdUser',
-            'NameAlbum',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => DataColumn::className(),
+                'attribute' => 'name_album',
+                'value' => function($model, $key, $index, $column) {
+                    $content = Html::img('http://basic/assets/img/pepegaDance.gif', ['class' => 'images-albums']);
+                    $content .= Html::tag('p', Html::encode($model->name_album), ['class' => 'name-albums']);
+                    return Html::a($content, Url::to([
+                        '/albums/view', 
+                        'id_album' => $model->id_album, 
+                        'autor_id_autor' => $model->autor_id_autor
+                        ]),
+                        ['class' => 'album-flex']
+                    );
+                },
+                'format' => 'raw',
+                
+            ],
         ],
     ]); ?>
 
-    <?php Pjax::end(); ?>
 
 </div>

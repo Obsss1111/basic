@@ -12,14 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'IdAlbum')->textInput() ?>
-
-    <?= $form->field($model, 'IdAutor')->textInput() ?>
-
-    <?= $form->field($model, 'IdUser')->textInput() ?>
-
-    <?= $form->field($model, 'NameAlbum')->textInput(['maxlength' => true]) ?>
-
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>

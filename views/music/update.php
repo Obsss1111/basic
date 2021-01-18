@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Music */
 
-$this->title = 'Update Music: ' . $model->IdMusic;
+$this->title = 'Update Music: ' . $model->id_music;
 $this->params['breadcrumbs'][] = ['label' => 'Musics', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->IdMusic, 'url' => ['view', 'id' => $model->IdMusic]];
+$this->params['breadcrumbs'][] = ['label' => $model->id_music, 'url' => ['view', 'id' => $model->id_music]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="music-update">

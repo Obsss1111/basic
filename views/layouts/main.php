@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => 'Триумф',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,9 +37,9 @@ AppAsset::register($this);
     ]);
     $menuItems = [
             ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Музыка', 'url' => ['/site/music']],
-            ['label' => 'Игры', 'url' => ['/site/games']],
-            ['label' => 'Страны', 'url' => ['/country/index']],
+            ['label' => 'Музыка', 'url' => ['/music/index']],
+//            ['label' => 'Игры', 'url' => ['/site/games']],
+//            ['label' => 'Страны', 'url' => ['/country/index']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
@@ -51,6 +51,7 @@ AppAsset::register($this);
                 'Выход (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
+            . Html::hiddenInput('label', Yii::$app->user->id, ['id' => 'username'])
             . Html::endForm()
             . '</li>';
     }
@@ -70,15 +71,15 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
+<?php if ($this->title != 'Музыка') { ?>
+    <footer class="footer">
+        <div class="container">        
+                <p class="pull-left">&copy; Смоленцев Д.Е. Выпускная квалификационная работа <?= date('Y') ?></p>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; Диплом <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
+                <p class="pull-right"><?= Yii::powered() ?></p>
+        </div>
+    </footer>
+<?php }?>
 <?php $this->endBody() ?>
 </body>
 </html>

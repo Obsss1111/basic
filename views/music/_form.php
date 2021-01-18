@@ -12,19 +12,19 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'IdMusic')->textInput() ?>
+    <?= $form->field($model, 'name_music')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'IdMusicPath')->textInput() ?>
+    <?= $form->field($model, 'name_style')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'IdMusicStyle')->textInput() ?>
+    <?= $form->field($model, 'duration')->textInput() ?>
 
-    <?= $form->field($model, 'IdAutor')->textInput() ?>
+    <?= $form->field($model, 'autor_name_autor')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'IdAlbum')->textInput() ?>
+    <?= $form->field($model, 'path_music_id_path')->textInput() ?>
 
-    <?= $form->field($model, 'IdUser')->textInput() ?>
+    <?= $form->field($model, 'music_style_id_style')->textInput() ?>
 
-    <?= $form->field($model, 'NameMusic')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'autor_id_autor')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

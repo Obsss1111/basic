@@ -17,8 +17,8 @@ class AlbumsSearch extends Albums
     public function rules()
     {
         return [
-            [['IdAlbum', 'IdAutor', 'IdUser'], 'integer'],
-            [['NameAlbum'], 'safe'],
+            [['id_album', 'autor_id_autor', 'music_id_music'], 'integer'],
+            [['name_album'], 'safe'],
         ];
     }
 
@@ -58,12 +58,12 @@ class AlbumsSearch extends Albums
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'IdAlbum' => $this->IdAlbum,
-            'IdAutor' => $this->IdAutor,
-            'IdUser' => $this->IdUser,
+            'id_album' => $this->id_album,
+            'autor_id_autor' => $this->autor_id_autor,
+            'music_id_music' => $this->music_id_music,
         ]);
 
-        $query->andFilterWhere(['like', 'NameAlbum', $this->NameAlbum]);
+        $query->andFilterWhere(['like', 'name_album', $this->name_album]);
 
         return $dataProvider;
     }

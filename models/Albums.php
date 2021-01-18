@@ -7,14 +7,10 @@ use Yii;
 /**
  * This is the model class for table "albums".
  *
- * @property int $IdAlbum
- * @property int|null $IdAutor Index
- * @property int|null $IdUser
- * @property string|null $NameAlbum
- *
- * @property Autor $idAutor
- * @property User $idUser
- * @property Music[] $musics
+ * @property int $id_album
+ * @property string $name_album
+ * @property int $autor_id_autor
+ * @property int $music_id_music
  */
 class Albums extends \yii\db\ActiveRecord
 {
@@ -32,12 +28,10 @@ class Albums extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['IdAlbum'], 'required'],
-            [['IdAlbum', 'IdAutor', 'IdUser'], 'integer'],
-            [['NameAlbum'], 'string', 'max' => 30],
-            [['IdAlbum'], 'unique'],
-            [['IdAutor'], 'exist', 'skipOnError' => true, 'targetClass' => Autors::className(), 'targetAttribute' => ['IdAutor' => 'IdAutor']],
-            [['IdUser'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['IdUser' => 'IdUser']],
+            [['id_album', 'name_album', 'autor_id_autor', 'music_id_music'], 'required'],
+            [['id_album', 'autor_id_autor', 'music_id_music'], 'integer'],
+            [['name_album'], 'string', 'max' => 45],
+            [['id_album', 'autor_id_autor'], 'unique', 'targetAttribute' => ['id_album', 'autor_id_autor']],
         ];
     }
 
@@ -47,40 +41,19 @@ class Albums extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'IdAlbum' => 'Id Album',
-            'IdAutor' => 'Index',
-            'IdUser' => 'Id User',
-            'NameAlbum' => 'Name Album',
+            'id_album' => 'Id альбома',
+            'name_album' => 'Альбомы',
+            'autor_id_autor' => 'Id исполнителя',
+            'music_id_music' => 'Id трека',
         ];
     }
 
     /**
-     * Gets query for [[IdAutor]].
-     *
-     * @return \yii\db\ActiveQuery
+     * {@inheritdoc}
+     * @return AlbumsQuery the active query used by this AR class.
      */
-    public function getIdAutor()
+    public static function find()
     {
-        return $this->hasOne(Autor::className(), ['IdAutor' => 'IdAutor']);
-    }
-
-    /**
-     * Gets query for [[IdUser]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getIdUser()
-    {
-        return $this->hasOne(User::className(), ['IdUser' => 'IdUser']);
-    }
-
-    /**
-     * Gets query for [[Musics]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMusics()
-    {
-        return $this->hasMany(Music::className(), ['IdAlbum' => 'IdAlbum']);
+        return new AlbumsQuery(get_called_class());
     }
 }

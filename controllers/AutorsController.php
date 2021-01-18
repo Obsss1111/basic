@@ -8,6 +8,8 @@ use app\models\AutorsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\MusicSearch;
+use app\models\AlbumsSearch;
 
 /**
  * AutorsController implements the CRUD actions for Autors model.
@@ -37,10 +39,15 @@ class AutorsController extends Controller
     {
         $searchModel = new AutorsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $searchModelMusic = new MusicSearch();
+        $dataProviderMusic = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchModelMusic' => $searchModelMusic,
+            'dataProviderMusic' => $dataProviderMusic,
         ]);
     }
 
