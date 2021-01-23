@@ -80,7 +80,7 @@ class ActionButtons extends ActionColumn{
                     'data-pjax' => '0',
                     'id' => $title.'_'.$key,
                     'name' => "[$title]",
-                    'value' => $title == 'Play' && $model->id_music === $model->pathMusicIdPath->id_path ? $model->pathMusicIdPath->path : $key,
+                    'value' => $title == 'Play' && $model->id_music && $model->pathMusicIdPath->id_path ? $model->pathMusicIdPath->path : $key,
                     'onclick' => strtolower($title) . 'Click(this)',
                 ], $additionalOptions, $this->buttonOptions);
                 $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-$iconName"]);

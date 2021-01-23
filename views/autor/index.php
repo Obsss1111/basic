@@ -16,10 +16,10 @@ use yii\helpers\Url;
             [
                 'class' => DataColumn::className(),
                 'attribute' => 'name_autor',
+                'format' => 'raw',
                 'value' => function($model, $key, $index){
                     return Html::a(Html::encode($model->name_autor), Url::to(['/autor/view', 'id' => $model->id_autor]));
                 },
-                'format' => 'raw',
             ],
         ],
     ]); ?>

@@ -10,7 +10,6 @@ use Yii;
  * @property int $id_music
  * @property string $name_music
  * @property string|null $name_style
- * @property string $duration
  * @property string|null $autor_name_autor
  * @property int|null $path_music_id_path
  * @property int|null $music_style_id_style
@@ -39,8 +38,7 @@ class Music extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_music', 'duration'], 'required'],
-            [['duration'], 'safe'],
+            [['name_music'], 'required'],
             [['path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
             [['name_music', 'autor_name_autor'], 'string', 'max' => 45],
             [['name_style'], 'string', 'max' => 64],
@@ -62,11 +60,10 @@ class Music extends \yii\db\ActiveRecord
             'id_music' => 'Id трека',
             'name_music' => 'Название',
             'name_style' => 'Стиль',
-            'duration' => 'Время',
             'autor_name_autor' => 'Исполнитель',
-            'path_music_id_path' => 'Id файлы',
+            'path_music_id_path' => 'Id файла',
             'music_style_id_style' => 'Id стиля',
-            'autor_id_autor' => 'Id исп.',
+            'autor_id_autor' => 'Id исполнителя',
         ];
     }
 

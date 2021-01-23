@@ -16,6 +16,7 @@ use app\models\AutorSearch;
 use app\models\AlbumsSearch;
 use app\models\FavoriteAlbumsSearch;
 use app\models\FavoriteMusicSearch;
+use app\models\MusicRepository;
 
 /**
  * MusicController implements the CRUD actions for Music model.
@@ -50,7 +51,7 @@ class MusicController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['POST', 'DELETE'],
                 ],
             ],
         ];
@@ -62,6 +63,8 @@ class MusicController extends Controller
      */
     public function actionIndex()
     {
+        $this->updateIndex();
+        
         $searchModel = new MusicSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
@@ -88,6 +91,16 @@ class MusicController extends Controller
             'dataProviderFavoriteMusic' => $dataProviderFavoriteMusic,
             'filterModelFavoriteMusic' => $searchModelFavoriteMusic,
         ]);
+    }
+    
+    /**
+     * Обновляет данные страницы перед загрузкой
+     */
+    public function updateIndex() 
+    {
+        $music_repository = new MusicRepository();
+        $music_repository->createListPathMusic();
+        $music_repository->createListMusic();
     }
 
     /**
@@ -168,6 +181,6 @@ class MusicController extends Controller
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException('Запрашиваемая страница не найдена.');
     }
 }

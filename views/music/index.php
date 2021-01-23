@@ -1,13 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\Pjax;
-use app\modules\ActionButtons;
-use yii\bootstrap\ButtonGroup;
 use yii\bootstrap\Tabs;
-use yii\grid\DataColumn;
-use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MusicSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -15,118 +10,71 @@ $this->title = 'Музыка';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-    <h1 style="margin-left: 10px;"><?= Html::encode($this->title) ?></h1>
-    <?php if(Yii::$app->user->id === 1) { ?>
-    <div style="text-align: right;">
-            <?= Html::a('Добавить музыку', ['create'], ['class' => 'btn btn-success']) ?>
-    </div>
-    <?php } ?>
+<h1 style="margin-left: 10px;"><?= Html::encode($this->title) ?></h1>    
 
 <div class="music-index">
-    <div class="left-content">
-
-        <?php Pjax::begin(); ?>
-        <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'layout' => "{items}\n{pager}",
-            'columns' => [
-                [
-                    'class' => DataColumn::className(),
-                    'attribute' => 'id_music',
-                    'label' => '#',
-                    'options' => ['style' => 'width: 50px;'],
-                ],
-                [
-                    'class' => DataColumn::className(),
-                    'attribute' => 'name_music',
-                    'value' => function ($model, $key, $index, $column) {
-                        return Html::a(Html::encode($model->name_music), Url::to(['/music/view', 'id' => $key, 'id_music' => $model->id_music]));
-                    },
-                    'format' => 'raw',
-                    
-                ],
-                [
-                    'attribute' => 'name_style',
-                    'options' => ['width' => 100]
-                ],
-                [
-                    'attribute' => 'duration',
-                    'options' => ['width' => 100]
-                ],
-                [
-                    'class' => DataColumn::className(),
-                    'attribute' => 'autor_name_autor',
-                    'format' => 'raw',
-                    'options' => ['width' => 180],
-                    'value' => function ($model, $key, $index, $column) {
-                        return Html::a(Html::encode($model->autor_name_autor), Url::to(['/autor/view', 'id' => $model->autor_id_autor]));
-                    },
-                ],
-                [
-                    'class' => ActionButtons::className(),
-                    'options' => ['width' => 115]
-                ],
-            ],
-        ]); ?>
-
-        <?php Pjax::end(); ?>
-
-    </div>
-    <div class="right-content">
-        <?= Tabs::widget([
-            'items' => [
-                [
-                    'label' => "Исполнители",
-                    'content' => $this->render('/autor/index', [
-                        'dataProvider' => $dataProviderAutor,
-                        'filterModel' => $searchModelAutor,
-                    ]),
-                    'active' => true
-                ],
-                [
-                    'label' => 'Альбомы',
-                    'content' => $this->render('/albums/index', [
-                        'dataProvider' => $dataProviderAlbum,
-                        'filterModel' => $searchModelAlbum,
-                    ]),
-                    'headerOptions' => [],
-                    'options' => ['id' => 'albumsGridView'],
-                ],
-                [
-                    'label' => 'Любимое',
+    <div class="container">
+        <div class="row">
+            <div class='col'>
+                <?php if(Yii::$app->user->id === 1) { 
+                    echo Html::a('Добавить музыку', ['create'], ['class' => 'btn btn-success']);
+                } ?>
+            </div>
+            <div class="col">
+                <?= Tabs::widget([
                     'items' => [
                         [
-                            'label' => 'Любимая музыка',
-                            'content' => $this->render('/favorite-music/index',[
-                                'dataProvider' => $dataProviderFavoriteMusic,
-                                'filterModel' => $searchModelFaloriteMusic,
-                            ])
+                            'label' => 'Новое',
+                            'content' => $this->render('/music/music', [
+                                'dataProvider' => $dataProvider,
+                                'filterModel' => $searchModel
+                            ]),
+                            'active' => true
                         ],
                         [
-                            'label' => 'Любимая альбомы',
-                            'content' => $this->render('/favorite-albums/index', [
-                                'dataProvider' => $dataProviderFavoriteAlbum,
-                                'filterModel' => $searchModelFavoriteAlbum,
+                            'label' => "Исполнители",
+                            'content' => $this->render('/autor/index', [
+                                'dataProvider' => $dataProviderAutor,
+                                'filterModel' => $searchModelAutor,
                             ]),
                         ],
                         [
-                            'label' => 'Любимые исполнители',
-                            'content' => 'DropdownB, Anim pariatur cliche...',
+                            'label' => 'Альбомы',
+                            'content' => $this->render('/albums/index', [
+                                'dataProvider' => $dataProviderAlbum,
+                                'filterModel' => $searchModelAlbum,
+                            ]),
                         ],
                         [
-                            'label' => 'Новое',
-                            'content' => 'В разработке'
+                            'label' => 'Любимое',
+                            'items' => [
+                                [
+                                    'label' => 'Любимая музыка',
+                                    'content' => $this->render('/favorite-music/index',[
+                                        'dataProvider' => $dataProviderFavoriteMusic,
+                                        'filterModel' => $searchModelFaloriteMusic,
+                                    ])
+                                ],
+                                [
+                                    'label' => 'Любимая альбомы',
+                                    'content' => $this->render('/favorite-albums/index', [
+                                        'dataProvider' => $dataProviderFavoriteAlbum,
+                                        'filterModel' => $searchModelFavoriteAlbum,
+                                    ]),
+                                ],
+                                [
+                                    'label' => 'Любимые исполнители',
+                                    'content' => 'DropdownB, Anim pariatur cliche...',
+                                ],
+                            ],
+
                         ],
                     ],
-                   
-                ],
-            ],
-        ]);
-        ?>        
-    </div>
+                ]);
+                ?>  
+            </div>
+        </div>
+    </div>    
 </div>
 <?php 
 $url_music = '';

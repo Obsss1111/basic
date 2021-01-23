@@ -19,7 +19,7 @@ class MusicSearch extends Music
     {
         return [
             [['id_music', 'path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
-            [['name_music', 'name_style', 'duration', 'autor_name_autor'], 'safe'],
+            [['name_music', 'name_style', 'autor_name_autor'], 'safe'],
         ];
     }
 
@@ -60,7 +60,6 @@ class MusicSearch extends Music
         // grid filtering conditions
         $query->andFilterWhere([
             'id_music' => $this->id_music,
-            'duration' => $this->duration,
             'path_music_id_path' => $this->path_music_id_path,
             'music_style_id_style' => $this->music_style_id_style,
             'autor_id_autor' => $this->autor_id_autor,
