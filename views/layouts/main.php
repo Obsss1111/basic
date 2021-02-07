@@ -22,6 +22,8 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <?php $this->registerJsFile('/assets/js/music.js', ['depends' => [\yii\web\JqueryAsset::className()]]); ?>
+
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -36,10 +38,9 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-            ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Музыка', 'url' => ['/music/index']],
-//            ['label' => 'Игры', 'url' => ['/site/games']],
-//            ['label' => 'Страны', 'url' => ['/country/index']],
+//        ['label' => 'Главная', 'url' => ['/site/index']],
+        ['label' => 'Музыка', 'url' => ['/music/index']],
+        ['label' => 'Любимая музыка', 'url' => ['/music/my-music']]
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Регистрация', 'url' => ['/site/signup']];
@@ -54,6 +55,7 @@ AppAsset::register($this);
             . Html::hiddenInput('label', Yii::$app->user->id, ['id' => 'username'])
             . Html::endForm()
             . '</li>';
+        $menuItems[] = ['label' => 'Профиль', 'url' => ['/user/index']];
     }
 
     echo Nav::widget([
@@ -71,7 +73,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-<?php if ($this->title != 'Музыка') { ?>
+<?php if ($this->title == 'Главная страница') { ?>
     <footer class="footer">
         <div class="container">        
                 <p class="pull-left">&copy; Смоленцев Д.Е. Выпускная квалификационная работа <?= date('Y') ?></p>
@@ -79,7 +81,18 @@ AppAsset::register($this);
                 <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
-<?php }?>
+<?php } else { ?>
+    <footer class="footer">
+        <div class="player">
+            <label id="label_play" style="text-align:center;" for="audio_player"></label>
+            <br>
+            <audio id="audio_player" style="width: 95%; margin: 10px 10px;" controls preload="auto" loop>
+                <source src="" type="audio/ogg">
+                <source src="" type="audio/mpeg">
+            </audio>
+        </div>
+    </footer>
+<?php } ?>
 <?php $this->endBody() ?>
 </body>
 </html>
