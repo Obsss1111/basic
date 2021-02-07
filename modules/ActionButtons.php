@@ -47,11 +47,9 @@ class ActionButtons extends ActionColumn{
      * {@inheritdoc}
      */
     protected function initDefaultButton($name, $iconName, $additionalOptions = [])
-    {
-        $path = new \app\models\MusicSearch();
-        
+    {        
         if (!isset($this->buttons[$name]) && strpos($this->template, '{' . $name . '}') !== false) {
-            $this->buttons[$name] = function ($url, $model, $key) use ($name, $iconName, $additionalOptions, $path) {
+            $this->buttons[$name] = function ($url, $model, $key) use ($name, $iconName, $additionalOptions) {
                 
                 switch ($name) {
                     case 'play':
@@ -80,8 +78,9 @@ class ActionButtons extends ActionColumn{
                     'data-pjax' => '0',
                     'id' => $title.'_'.$key,
                     'name' => "[$title]",
-                    'value' => $title == 'Play' && $model->id_music && $model->pathMusicIdPath->id_path ? $model->pathMusicIdPath->path : $key,
+                    'value' => $title == 'Play' && $model->id_music && $model->rel_path->id_path ? $model->rel_path->path : $key,
                     'onclick' => strtolower($title) . 'Click(this)',
+                    'class' => "btn action-btn",
                 ], $additionalOptions, $this->buttonOptions);
                 $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-$iconName"]);
                 return Html::button($icon, $options);
