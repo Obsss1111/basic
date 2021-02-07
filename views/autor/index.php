@@ -12,6 +12,7 @@ use yii\helpers\Url;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'layout' => "{items}\n{pager}",
+        'tableOptions' => ['class' => 'table table-hover'],
         'columns' => [
             [
                 'class' => DataColumn::className(),
