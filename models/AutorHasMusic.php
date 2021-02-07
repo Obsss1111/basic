@@ -10,8 +10,8 @@ use Yii;
  * @property int $autor_id_autor
  * @property int $music_id_music
  *
- * @property Autor $autorIdAutor
- * @property Music $musicIdMusic
+ * @property Autor $rel_autor
+ * @property Music $rel_music
  */
 class AutorHasMusic extends \yii\db\ActiveRecord
 {
@@ -53,7 +53,7 @@ class AutorHasMusic extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AutorQuery
      */
-    public function getAutorIdAutor()
+    public function getRel_Autor()
     {
         return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor']);
     }
@@ -63,7 +63,7 @@ class AutorHasMusic extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|MusicQuery
      */
-    public function getMusicIdMusic()
+    public function getRel_Music()
     {
         return $this->hasOne(Music::className(), ['id_music' => 'music_id_music']);
     }
