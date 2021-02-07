@@ -51,7 +51,7 @@ class Autor extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AutorHasMusicQuery
      */
-    public function getAutorHasMusics()
+    public function getRel_Autor()
     {
         return $this->hasMany(AutorHasMusic::className(), ['autor_id_autor' => 'id_autor']);
     }
@@ -61,7 +61,7 @@ class Autor extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|MusicQuery
      */
-    public function getMusicIdMusics()
+    public function getRel_Musics()
     {
         return $this->hasMany(Music::className(), ['id_music' => 'music_id_music'])->viaTable('autor_has_music', ['autor_id_autor' => 'id_autor']);
     }
