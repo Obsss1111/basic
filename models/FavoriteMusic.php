@@ -11,7 +11,7 @@ use Yii;
  * @property int $user_id
  *
  * @property User $user
- * @property Music $musicIdMusic
+ * @property Music $rel_music
  */
 class FavoriteMusic extends \yii\db\ActiveRecord
 {
@@ -63,7 +63,7 @@ class FavoriteMusic extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|MusicQuery
      */
-    public function getMusicIdMusic()
+    public function getRel_music()
     {
         return $this->hasOne(Music::className(), ['id_music' => 'music_id_music']);
     }
