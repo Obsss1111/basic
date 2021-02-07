@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'label' => 'Новое',
                             'content' => $this->render('/music/music', [
                                 'dataProvider' => $dataProvider,
-                                'filterModel' => $searchModel
+                                'filterModel' => $filterModel
                             ]),
                             'active' => true
                         ],
@@ -44,31 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'dataProvider' => $dataProviderAlbum,
                                 'filterModel' => $searchModelAlbum,
                             ]),
-                        ],
-                        [
-                            'label' => 'Любимое',
-                            'items' => [
-                                [
-                                    'label' => 'Любимая музыка',
-                                    'content' => $this->render('/favorite-music/index',[
-                                        'dataProvider' => $dataProviderFavoriteMusic,
-                                        'filterModel' => $searchModelFaloriteMusic,
-                                    ])
-                                ],
-                                [
-                                    'label' => 'Любимая альбомы',
-                                    'content' => $this->render('/favorite-albums/index', [
-                                        'dataProvider' => $dataProviderFavoriteAlbum,
-                                        'filterModel' => $searchModelFavoriteAlbum,
-                                    ]),
-                                ],
-                                [
-                                    'label' => 'Любимые исполнители',
-                                    'content' => 'DropdownB, Anim pariatur cliche...',
-                                ],
-                            ],
-
-                        ],
+                        ],                        
                     ],
                 ]);
                 ?>  
@@ -76,28 +52,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>    
 </div>
-<?php 
-$url_music = '';
-$name_music = '';
-$html = Html::beginTag('div', ['class' => 'player']);
-$html .= Html::label($name_music , 'audio_player', ['style' => 'text-align:center;', 'id' => 'label_play']);
-$html .= Html::tag('br');
-$html .= Html::beginTag('audio', 
-        [
-            'id' => 'audio_player', 
-            'style' => 'width: 95%; margin: 10px 10px;', 
-            'controls' => true, 
-            'preload' => 'auto', 
-            'loop' => true,
-        ]);
-$html .= Html::tag('track', '',['label' => 'Русский']);
-$html .= Html::tag('track', '',['label' => 'English']);
-$html .= Html::tag('track', '',['label' => 'Franch']);
-$html .= Html::tag('source', '', [/*'src' => $url_music,*/ 'type' => 'audio/ogg']);
-$html .= Html::tag('source', '', [/*'src' => $url_music,*/ 'type' => 'audio/mpeg']);
-$html .= Html::endTag('audio');
-$html .= Html::endTag('div');
-echo $html;
-
-$this->registerJsFile('/assets/js/music.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
-?>
