@@ -37,7 +37,7 @@ class MusicController extends Controller
 //                },
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout', 'my-music'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -74,22 +74,34 @@ class MusicController extends Controller
         $searchModelAlbum = new AlbumsSearch();
         $dataProviderAlbum = $searchModelAlbum->search(Yii::$app->request->queryParams);
         
-        $searchModelFavoriteAlbum = new FavoriteAlbumsSearch();
-        $dataProviderFavoriteAlbum = $searchModel->search(Yii::$app->request->queryParams);
-        
-        $searchModelFavoriteMusic = new FavoriteMusicSearch();
-        $dataProviderFavoriteMusic = $searchModelFavoriteMusic->search(Yii::$app->request->queryParams);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            
             'dataProviderAutor' => $dataProviderAutor,
-            'filterModelAutor' => $searchModelAutor,
+            'searchModelAutor' => $searchModelAutor,
+            
             'dataProviderAlbum' => $dataProviderAlbum,
-            'filterModelAlbum' => $searchModelAlbum,
+            'searchModelAlbum' => $searchModelAlbum,            
+        ]);
+    }
+    
+    /**
+     * Показывает все можели любимой музыки
+     */
+    public function actionMyMusic()
+    {
+        $searchModelFavoriteAlbum = new FavoriteAlbumsSearch();
+        $dataProviderFavoriteAlbum = $searchModelFavoriteAlbum->search(Yii::$app->request->queryParams);
+        
+        $searchModelFavoriteMusic = new FavoriteMusicSearch();
+        $dataProviderFavoriteMusic = $searchModelFavoriteMusic->search(Yii::$app->request->queryParams);
+        
+        return $this->render('my-music', [
             'dataProviderFavoriteAlbum' =>$dataProviderFavoriteAlbum,
-            'filterModelFavoriteAlbum' => $searchModelFavoriteAlbum,
+            'searchModelFavoriteAlbum' => $searchModelFavoriteAlbum,
             'dataProviderFavoriteMusic' => $dataProviderFavoriteMusic,
-            'filterModelFavoriteMusic' => $searchModelFavoriteMusic,
+            'searchModelFavoriteMusic' => $searchModelFavoriteMusic,
         ]);
     }
     
