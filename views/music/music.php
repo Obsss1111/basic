@@ -7,13 +7,12 @@ use yii\grid\DataColumn;
 use yii\helpers\Url;
 ?>
 
-<?php Pjax::begin(); ?>
-<?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
-    'filterModel' => $searchModel,
+    'filterModel' => $filterModel,
     'layout' => "{items}\n{pager}",
+    'tableOptions' => ['class' => 'table table-hover'],
     'columns' => [
         [
             'class' => DataColumn::className(),
@@ -47,5 +46,4 @@ use yii\helpers\Url;
     ],
 ]); ?>
 
-<?php Pjax::end(); ?>
 
