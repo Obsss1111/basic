@@ -140,7 +140,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery|FavoriteAlbumsQuery
      */
-    public function getFavoriteAlbums()
+    public function getRel_favAlbums()
     {
         return $this->hasMany(FavoriteAlbums::className(), ['user_id' => 'id']);
     }
@@ -150,7 +150,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery|FavoriteMusicQuery
      */
-    public function getFavoriteMusic()
+    public function getRel_favMusic()
     {
         return $this->hasOne(FavoriteMusic::className(), ['user_id' => 'id']);
     }
@@ -160,7 +160,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery|FavoriteStyleQuery
      */
-    public function getFavoriteStyles()
+    public function getRel_favStyles()
     {
         return $this->hasMany(FavoriteStyle::className(), ['user_id' => 'id']);
     }
