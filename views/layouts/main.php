@@ -38,7 +38,7 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-//        ['label' => 'Главная', 'url' => ['/site/index']],
+        ['label' => 'Главная', 'url' => ['/site/index']],
         ['label' => 'Музыка', 'url' => ['/music/index']],
         ['label' => 'Любимая музыка', 'url' => ['/music/my-music']]
     ];
