@@ -18,23 +18,29 @@ use yii\helpers\Url;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'layout' => "{items}\n{pager}",
+        'tableOptions' => ['class' => 'table table-hover'],
         'columns' => [
             [
                 'class' => DataColumn::className(),
                 'attribute' => 'name_album',
+                'format' => 'raw',
+                'options' => ['class' => 'row'],
                 'value' => function($model, $key, $index, $column) {
-                    $content = Html::img('http://basic/assets/img/pepegaDance.gif', ['class' => 'images-albums']);
-                    $content .= Html::tag('p', Html::encode($model->name_album), ['class' => 'name-albums']);
-                    return Html::a($content, Url::to([
+                    $btn_options = [
+                        'class' => 'btn btn-light col',
+                        'onclick' => 'albumPlay(this)',
+                    ];
+                    $url_options = [
                         '/albums/view', 
                         'id_album' => $model->id_album, 
                         'autor_id_autor' => $model->autor_id_autor
-                        ]),
-                        ['class' => 'album-flex']
-                    );
-                },
-                'format' => 'raw',
-                
+                    ];
+                    $html = Html::beginTag('div').
+                            Html::button(Html::img('http://basic/assets/img/pepegaDance.gif', ['class' => 'images-albums']), $btn_options).
+                            Html::a(Html::encode($model->name_album), Url::to($url_options), ['class' => 'col']).
+                            Html::endTag('div');
+                    return $html;
+                },                
             ],
         ],
     ]); ?>
