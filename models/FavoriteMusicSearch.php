@@ -47,7 +47,7 @@ class FavoriteMusicSearch extends FavoriteMusic
             'music_id_music' => $this->music_id_music,
             'user_id' => $this->user_id, 
         ]);
-        $query->andFilterWhere(['like','music.name_music', $this->musicIdMusic->name_music,]);
+        $query->andFilterWhere(['like','music.name_music', $this->rel_music->name_music,]);
 
         // add conditions that should always apply here
 
