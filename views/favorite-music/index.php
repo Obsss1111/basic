@@ -15,6 +15,7 @@ use app\modules\ActionButtons;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'layout' => "{items}\n{pager}",
+        'tableOptions' => ['class' => 'table table-hover table-borderless table-sm'],
         'columns' => [
             [
                 'attribute' => 'music_id_music',
@@ -23,26 +24,27 @@ use app\modules\ActionButtons;
                 'options' => ['style' => 'width: 60px; text-align: center;'],
                 'value' => function($model, $key, $index) {
                     $options = [
-                        'class' => 'button',
+                        'class' => 'btn action-btn',
                         'onclick' => 'playClick(this)',
                         'id' => 'Play_[' . ($index+1) .']',
-                        'value' => $model->musicIdMusic->pathMusicIdPath->path
+                        'value' => $model->rel_music->rel_path->path
                     ];
-                    return Html::button($index+1, $options);
+                    $icon = Html::tag('span', '', ['class' => "oi oi-media-play"]);
+                    return Html::button($icon, $options);
                 }
             ],
             [
                 'attribute' => 'music.name_music',
                 'label' => 'Название',
                 'value' => function ($model, $key, $index) {
-                    return $model->musicIdMusic->name_music;
+                    return $model->rel_music->name_music;
                 }
             ],
             [
-                'attribute' => 'music.name_autor',
+                'attribute' => 'autor.name_autor',
                 'label' => 'Исполнитель',
                 'value' => function ($model, $key, $index) {
-                    return $model->musicIdMusic->autor_name_autor;
+                    return $model->rel_music->autor_name_autor;
                 }
             ]
             

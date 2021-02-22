@@ -56,4 +56,8 @@ class Albums extends \yii\db\ActiveRecord
     {
         return new AlbumsQuery(get_called_class());
     }
+     
+    public function getRel_autor() {
+        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor']);
+    }
 }

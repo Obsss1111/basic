@@ -3,13 +3,13 @@ body {
     height: 100%;
 }
 
-button {
+.action-btn {
     background: none;
     border: none;
     border-radius: 50%;                    
 }
 
-button:hover {
+.action-btn:hover {
     color: #f5f5f5;
     background-color: #5cb85c;
     border-color: #4cae4c;
@@ -107,7 +107,7 @@ button:hover {
     text-align: center;
 }
 .images-albums {
-    background: #5cb85c;
+    /*background: #5cb85c;*/
     width: 100px; 
     height: 100px;
 }

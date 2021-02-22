@@ -12,21 +12,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'IdUser')->textInput() ?>
+    <?= $form->field($model, 'id')->textInput() ?>
 
-    <?= $form->field($model, 'Login')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'FavoriteMusic')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'FavoriteAlbum')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'passwork_reset_token')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'FavoriteStyleMusic')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'FavoriteAutor')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'FavoriteStyle')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'created_at')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'updated_at')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'autor_id_autor')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

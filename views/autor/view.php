@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Autor */
@@ -49,9 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
         
     </div>
     <div class="bottom-content">
-        <?= DetailView::widget([
-            'model' => $model->musicIdMusics,
-            'attributes' => [
+        <?= GridView::widget([           
+            'dataProvider' => $dataProvider,
+            'filterModel' => $filterModel,
+            'columns' => [
                 'id_music',
                 'name_music'
             ]

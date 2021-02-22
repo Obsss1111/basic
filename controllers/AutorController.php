@@ -8,6 +8,7 @@ use app\models\AutorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\MusicSearch;
 
 /**
  * AutorController implements the CRUD actions for Autor model.
@@ -52,8 +53,12 @@ class AutorController extends Controller
      */
     public function actionView($id)
     {
+        $filterModel = new MusicSearch();
+        $dataProvider = $filterModel->findMusic($id);
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
+            'filterModel' => $filterModel,
         ]);
     }
 

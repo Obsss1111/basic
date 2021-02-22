@@ -7,12 +7,11 @@ use yii\helpers\Url;
 
 ?>
 <div class="autor-index">
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => $filterModel,
         'layout' => "{items}\n{pager}",
-        'tableOptions' => ['class' => 'table table-hover'],
+        'tableOptions' => ['class' => 'table table-hover table-sm table-borderless container'],
         'columns' => [
             [
                 'class' => DataColumn::className(),
@@ -24,6 +23,4 @@ use yii\helpers\Url;
             ],
         ],
     ]); ?>
-
-
 </div>

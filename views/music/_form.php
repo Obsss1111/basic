@@ -16,8 +16,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name_style')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'duration')->textInput() ?>
-
     <?= $form->field($model, 'autor_name_autor')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'path_music_id_path')->textInput() ?>

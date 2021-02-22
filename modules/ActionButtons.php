@@ -34,7 +34,7 @@ class ActionButtons extends ActionColumn{
      */
     protected function initDefaultButtons()
     {
-        $this->initDefaultButton('play', 'play');
+        $this->initDefaultButton('play', 'media-play');
         $this->initDefaultButton('plus', 'plus');
         $this->initDefaultButton('heart', 'heart');
         $this->initDefaultButton('view', 'menu-right');
@@ -82,7 +82,7 @@ class ActionButtons extends ActionColumn{
                     'onclick' => strtolower($title) . 'Click(this)',
                     'class' => "btn action-btn",
                 ], $additionalOptions, $this->buttonOptions);
-                $icon = Html::tag('span', '', ['class' => "glyphicon glyphicon-$iconName"]);
+                $icon = Html::tag('span', '', ['class' => "oi oi-$iconName"]);
                 return Html::button($icon, $options);
             };
         }

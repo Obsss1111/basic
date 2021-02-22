@@ -13,6 +13,9 @@ use app\models\EntryForm;
 use app\models\User;
 use app\models\SignupForm;
 use Error;
+use app\models\MusicStyleSearch;
+use app\models\MusicSearch;
+use app\models\AutorSearch;
 
 class SiteController extends Controller
 {
@@ -74,7 +77,25 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $filterModel = new MusicStyleSearch();
+        $dataProvider = $filterModel->search(Yii::$app->request->queryParams);
+        
+        $filterMusic = new MusicSearch();
+        $dataMusic = $filterMusic->search(Yii::$app->request->queryParams);
+        
+        $filterAutor = new AutorSearch();
+        $dataAutor = $filterAutor->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'filterModel' => $filterModel,
+            
+            'dataMusic' => $dataMusic,
+            'filterMusic' => $filterMusic,
+            
+            'dataAutor' => $dataAutor,
+            'filterAutor' => $filterAutor,
+        ]);
     }
 
     /**

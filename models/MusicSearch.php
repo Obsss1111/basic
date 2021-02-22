@@ -82,4 +82,17 @@ class MusicSearch extends Music
             return $model->path;
         }
     }
+    
+    public function findMusic($user_id)
+    {
+        $query = Music::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);        
+        $query->andFilterWhere([
+            'autor_id_autor' => $user_id,
+        ]);
+
+        return $dataProvider;
+    }
 }

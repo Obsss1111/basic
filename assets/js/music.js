@@ -1,29 +1,27 @@
 var audio = document.getElementById('audio_player');
 
-function playClick(buttonPlay) {
-    var play_btn = document.getElementById(buttonPlay.id);
-    audio.src = 'http://basic/assets/musics/'+play_btn.value+'';
-    var parent = play_btn.parentElement.parentElement;
-    var _text = parent.childNodes[1];
-    $('#label_play').text($(_text).text());
+function playClick(button) {
+    var content = button.parentElement.parentElement.childNodes[1];
+    var span = button.childNodes[0].classList; 
+    
+    audio.src = 'http://basic/assets/musics/'+button.value+'';
 
-    var playPromise = audio.play();
-    if (playPromise !== undefined) { 
-        playPromise.then(_ => {
-            
-        }) 
-        .catch(error => {
-        // Auto-play was prevented
-        // Show paused UI.
-        });
-    }
+    $('#label_play').text($(content).text());
+    
+    return audio.paused ? play(span) : pause(span);
 
+};
+
+function play(span) {
+    audio.play();  
+    span.add('glyphicon-pause');
+    span.remove('glyphicon-play');
 }
 
-function pauseClick(player) {
-    if (player.play()) {
-        player.pause();
-    }
+function pause(span) {
+    audio.pause();
+    span.add('glyphicon-play');
+    span.remove('glyphicon-pause');
 }
 
 function plusClick() {
@@ -55,8 +53,6 @@ function deleteClick() {
     
 }
 
-
-
-
-
-
+function albumPlay(album) {
+    
+}
