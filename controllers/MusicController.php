@@ -17,6 +17,7 @@ use app\models\AlbumsSearch;
 use app\models\FavoriteAlbumsSearch;
 use app\models\FavoriteMusicSearch;
 use app\models\MusicRepository;
+use app\services\AccessService;
 
 /**
  * MusicController implements the CRUD actions for Music model.
@@ -82,7 +83,9 @@ class MusicController extends Controller
             'searchModelAutor' => $searchModelAutor,
             
             'dataProviderAlbum' => $dataProviderAlbum,
-            'searchModelAlbum' => $searchModelAlbum,            
+            'searchModelAlbum' => $searchModelAlbum,  
+            
+            'access' => AccessService::hasAccess(),
         ]);
     }
     
@@ -194,5 +197,5 @@ class MusicController extends Controller
         }
 
         throw new NotFoundHttpException('Запрашиваемая страница не найдена.');
-    }
+    }    
 }
