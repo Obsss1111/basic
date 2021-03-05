@@ -21,6 +21,7 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  * @property int|null $autor_id_autor
+ * @property int $access 
  *
  * @property FavoriteAlbums[] $favoriteAlbums
  * @property FavoriteMusic $favoriteMusic
