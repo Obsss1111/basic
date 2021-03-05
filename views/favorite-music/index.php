@@ -15,7 +15,7 @@ use app\modules\ActionButtons;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'layout' => "{items}\n{pager}",
-        'tableOptions' => ['class' => 'table table-hover table-borderless table-sm'],
+        'tableOptions' => ['class' => 'table-hover table-borderless table-sm'],
         'columns' => [
             [
                 'attribute' => 'music_id_music',
@@ -41,10 +41,11 @@ use app\modules\ActionButtons;
                 }
             ],
             [
-                'attribute' => 'autor.name_autor',
+                'attribute' => 'rel_autor.name_autor',
                 'label' => 'Исполнитель',
-                'value' => function ($model, $key, $index) {
-                    return $model->rel_music->autor_name_autor;
+                'format' => 'raw',
+                'value' => function($model) {
+                    return Html::a(Html::encode($model->rel_autor->name_autor), ['/autor/view', 'id' => $model->rel_autor->id_autor]);
                 }
             ]
             
