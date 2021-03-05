@@ -12,14 +12,16 @@ use app\models\PathMusic;
  */
 class MusicSearch extends Music
 {
+    public $autorName;
+    public $styleName;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_music', 'path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
-            [['name_music', 'name_style', 'autor_name_autor'], 'safe'],
+            [['id_music', 'path_music_id_path', 'music_style_id_style'], 'integer'],
+            [['name_music', 'autorName', 'styleName'], 'safe'],
         ];
     }
 
@@ -42,13 +44,23 @@ class MusicSearch extends Music
     public function search($params)
     {
         $query = Music::find();
-
+        $query->joinWith(['rel_autor'])
+              ->joinWith(['rel_style']);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        
+        $dataProvider->sort->attributes['autorName'] = [
+            'asc' => [Autor::tableName().'.name_autor' => SORT_ASC],
+            'desc' => [Autor::tableName().'.name_autor' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['styleName'] = [
+            'asc' => [MusicStyle::tableName().'.name_style' => SORT_ASC],
+            'desc' => [MusicStyle::tableName().'.name_style' => SORT_DESC],
+        ];
+        
         $this->load($params);
 
         if (!$this->validate()) {
@@ -62,12 +74,11 @@ class MusicSearch extends Music
             'id_music' => $this->id_music,
             'path_music_id_path' => $this->path_music_id_path,
             'music_style_id_style' => $this->music_style_id_style,
-            'autor_id_autor' => $this->autor_id_autor,
         ]);
 
         $query->andFilterWhere(['like', 'name_music', $this->name_music])
-            ->andFilterWhere(['like', 'name_style', $this->name_style])
-            ->andFilterWhere(['like', 'autor_name_autor', $this->autor_name_autor]);
+            ->andFilterWhere(['like', MusicStyle::tableName().'.name_style', $this->styleName])
+            ->andFilterWhere(['like', Autor::tableName().'.name_autor', $this->autorName]);    
 
         return $dataProvider;
     }
@@ -89,9 +100,6 @@ class MusicSearch extends Music
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);        
-        $query->andFilterWhere([
-            'autor_id_autor' => $user_id,
-        ]);
 
         return $dataProvider;
     }
