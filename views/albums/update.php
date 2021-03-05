@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = 'Update Albums: ' . $model->id_album;
 $this->params['breadcrumbs'][] = ['label' => 'Albums', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id_album, 'url' => ['view', 'id_album' => $model->id_album, 'autor_id_autor' => $model->autor_id_autor]];
+$this->params['breadcrumbs'][] = ['label' => $model->id_album, 'url' => ['view', 'id' => $model->id_album]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="albums-update">
