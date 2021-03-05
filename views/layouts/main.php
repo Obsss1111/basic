@@ -82,22 +82,14 @@ AppAsset::register($this);
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                'homeLink' => [
-                    'label' => 'Главная',
-                    'url' => 'index.php'
-                ]
             ]) ?>
-            <?= Alert::widget() ?>
+            <?= Alert::widget() ?>            
             <?= $content ?>
         </div>
     </div>
-    <?php if ($this->title == 'Главная страница') {
-        $options = ['class' => 'footer']; 
-    } else {
-        $options = [
-            'class' => 'footer',
-            'style' => "margin-top: 40px;"
-        ];    
+    <?php $options = ['class' => 'footer', 'style' => 'z-index: 1000; position: fixed;']; 
+    if ($this->title != 'Главная страница') {    
+        $options['style'] .= " margin-top: 30px;";    
     }
     ?>
     <?= Html::beginTag('footer', $options) ?>
@@ -105,7 +97,7 @@ AppAsset::register($this);
             <div class="container">
                 <div class="row row-cols-2">
                 <div class="col col-sm-9">
-                    <p>&copy; Смоленцев Д.Е. Выпускная квалификационная работа <?= date('Y') ?></p>
+                    <p>&copy; Смоленцев Д.Е. Выпускная квалификационная работа 2020-<?= date('Y') ?></p>
                 </div>
                     <div class="col col-sm-3" style="text-align: right;">
                     <p><?= Yii::powered() ?></p>
