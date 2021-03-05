@@ -68,6 +68,12 @@ class FavoriteMusic extends \yii\db\ActiveRecord
         return $this->hasOne(Music::className(), ['id_music' => 'music_id_music']);
     }
     
+    public function getRel_autor() 
+    {
+        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor'])
+                    ->viaTable('autor_has_music', ['music_id_music' => 'music_id_music']);
+    }
+    
     public function addLikedMusic($music_id_music, $user_id) {
         $model = FavoriteMusic::findOne(['music_id_music' => $music_id_music, 'user_id' => $user_id]);
         if (!$model) {
