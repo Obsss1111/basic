@@ -108,8 +108,47 @@ body {
 }
 .images-albums {
     /*background: #5cb85c;*/
-    width: 100%; 
-    height: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.hazel {
+    background: #77A1D3;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #E684AE, #79CBCA, #77A1D3);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #E684AE, #79CBCA, #77A1D3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.warm {
+    background: #9796f0;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #fbc7d4, #9796f0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.bighead {
+    background: #c94b4b;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4b134f, #c94b4b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4b134f, #c94b4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.orange-fun {
+    background: #fc4a1a;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f7b733, #fc4a1a);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f7b733, #fc4a1a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.bg-album {
+    background: #222;
+    border-color: #222;
+    border-width: 5px;
+}
+
+.bg-album:hover {
+    background: #000;
+    border-color: #ffc107 !important;
+    color: #ffc107 !important;
+    border-width: 5px;
 }
 
 .album-flex {
@@ -131,39 +170,12 @@ body {
     text-align:center; 
     background: #222;
     color: white;
-    /*border-top: 1px solid #ddd;*/
     padding-top: 5px;
-    border-color: /*#101010*/#222;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #222;
 }
 .music-index {
     display: -webkit-inline-flex;
     display: inline-flex; 
-}
-
-table {
-  /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
-  font-size: 16px;
-  background: white;
-  max-width: 70%;
-  width: 70%;
-  border-collapse: collapse;
-  text-align: left;
-}
-th {
-  font-weight: normal;
-  color: #039;
-  border-bottom: 1px solid #6678b1;
-  padding: 10px 8px;
-}
-td {
-  color: #669;
-  padding: 9px 8px;
-  transition: .3s linear;
-}
-tr:hover td {
-    color: /*#6699ff*/black;
-    background: #e8edff;
 }
 
 .wrap {
