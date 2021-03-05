@@ -11,6 +11,7 @@ use app\models\Albums;
  */
 class AlbumsSearch extends Albums
 {
+    public $autorName;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class AlbumsSearch extends Albums
     {
         return [
             [['id_album'], 'integer'],
-            [['name_album', 'img'], 'safe'],
+            [['name_album', 'img', 'autorName'], 'safe'],
         ];
     }
 
