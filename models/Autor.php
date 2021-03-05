@@ -9,9 +9,13 @@ use Yii;
  *
  * @property int $id_autor
  * @property string $name_autor
+ * @property string|null $img
  *
+ * @property AlbumsMusic[] $albumsMusics
+ * @property Music[] $musicAlbums
  * @property AutorHasMusic[] $autorHasMusics
  * @property Music[] $musicIdMusics
+ * @property Music $music
  */
 class Autor extends \yii\db\ActiveRecord
 {
@@ -30,6 +34,7 @@ class Autor extends \yii\db\ActiveRecord
     {
         return [
             [['name_autor'], 'required'],
+            [['img'], 'string'],
             [['name_autor'], 'string', 'max' => 45],
             [['name_autor'], 'unique'],
         ];
@@ -41,17 +46,38 @@ class Autor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_autor' => 'Id исп.',
-            'name_autor' => 'Исполнитель',
+            'id_autor' => 'Id Autor',
+            'name_autor' => 'Name Autor',
+            'img' => 'Img',
         ];
+    }
+
+    /**
+     * Gets query for [[AlbumsMusics]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAlbumsMusics()
+    {
+        return $this->hasMany(AlbumsMusic::className(), ['id_autor_music' => 'id_autor']);
+    }
+
+    /**
+     * Gets query for [[MusicAlbums]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMusicAlbums()
+    {
+        return $this->hasMany(Music::className(), ['id_music' => 'id_music_albums'])->viaTable('albums_music', ['id_autor_music' => 'id_autor']);
     }
 
     /**
      * Gets query for [[AutorHasMusics]].
      *
-     * @return \yii\db\ActiveQuery|AutorHasMusicQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getRel_Autor()
+    public function getAutorHasMusics()
     {
         return $this->hasMany(AutorHasMusic::className(), ['autor_id_autor' => 'id_autor']);
     }
@@ -59,7 +85,7 @@ class Autor extends \yii\db\ActiveRecord
     /**
      * Gets query for [[MusicIdMusics]].
      *
-     * @return \yii\db\ActiveQuery|MusicQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getRel_music()
     {
@@ -67,11 +93,17 @@ class Autor extends \yii\db\ActiveRecord
     }
 
     /**
-     * {@inheritdoc}
-     * @return AutorQuery the active query used by this AR class.
+     * Gets query for [[Music]].
+     *
+     * @return \yii\db\ActiveQuery
      */
-    public static function find()
+    public function getMusic()
     {
-        return new AutorQuery(get_called_class());
+        return $this->hasOne(Music::className(), ['autor_id_autor' => 'id_autor']);
     }
+    
+        public function getCountTracks() : int
+    {
+        return $this->hasMany(AlbumsMusic::className(), ['id_autor_music' => 'id_autor'])->count();
+    } 
 }
