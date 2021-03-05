@@ -44,15 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>  
         </div>        
-        <?php if(Yii::$app->user->id === 1) {  ?>    
-        <div class="card text-dark bg-light mb-3" style="max-width: 18rem; max-height: 10rem;">
-            <div class="card-header">Режим администратора</div>
-            <div class="card-body"> 
-                <h5 class="card-title">Опции</h5>
-                <?= Html::a('Добавить музыку', ['create'], ['class' => 'btn btn-success card-text']); ?>
-            </div>
-
-        </div>                    
-        <?php } ?>
+        <?= $this->render('/layouts/menu', ['access' => $access]); ?>
     </div>
 </div>    
