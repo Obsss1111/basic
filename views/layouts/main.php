@@ -87,9 +87,9 @@ AppAsset::register($this);
             <?= $content ?>
         </div>
     </div>
-    <?php $options = ['class' => 'footer', 'style' => 'z-index: 1000; position: fixed;']; 
+    <?php $options = ['class' => 'footer', 'style' => 'z-index: 1000;']; 
     if ($this->title != 'Главная страница') {    
-        $options['style'] .= " margin-top: 30px;";    
+        $options['style'] .= " margin-top: 40px;";    
     }
     ?>
     <?= Html::beginTag('footer', $options) ?>
