@@ -9,11 +9,8 @@ use Yii;
  *
  * @property int $id_music
  * @property string $name_music
- * @property string|null $name_style
- * @property string|null $autor_name_autor
  * @property int|null $path_music_id_path
  * @property int|null $music_style_id_style
- * @property int|null $autor_id_autor
  *
  * @property Albums[] $rel_albums
  * @property AutorHasMusic[] $rel_autors
@@ -30,8 +27,7 @@ class Music extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'music';
-    }
-
+    }    
     /**
      * {@inheritdoc}
      */
@@ -39,13 +35,10 @@ class Music extends \yii\db\ActiveRecord
     {
         return [
             [['name_music'], 'required'],
-            [['path_music_id_path', 'music_style_id_style', 'autor_id_autor'], 'integer'],
-            [['name_music', 'autor_name_autor'], 'string', 'max' => 45],
-            [['name_style'], 'string', 'max' => 64],
+            [['path_music_id_path', 'music_style_id_style'], 'integer'],
+            [['name_music'], 'string', 'max' => 45],
             [['music_style_id_style'], 'unique'],
             [['path_music_id_path'], 'unique'],
-            [['autor_id_autor'], 'unique'],
-            [['autor_name_autor'], 'unique'],
             [['path_music_id_path'], 'exist', 'skipOnError' => true, 'targetClass' => PathMusic::className(), 'targetAttribute' => ['path_music_id_path' => 'id_path']],
             [['music_style_id_style'], 'exist', 'skipOnError' => true, 'targetClass' => MusicStyle::className(), 'targetAttribute' => ['music_style_id_style' => 'id_style']],
         ];
@@ -59,11 +52,8 @@ class Music extends \yii\db\ActiveRecord
         return [
             'id_music' => 'Id трека',
             'name_music' => 'Название',
-            'name_style' => 'Стиль',
-            'autor_name_autor' => 'Исполнитель',
             'path_music_id_path' => 'Id файла',
             'music_style_id_style' => 'Id стиля',
-            'autor_id_autor' => 'Id исполнителя',
         ];
     }
 
@@ -94,6 +84,11 @@ class Music extends \yii\db\ActiveRecord
      */
     public function getRel_autor()
     {
+        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor'])->viaTable('autor_has_music', ['music_id_music' => 'id_music']);
+    }
+    
+    public function getNameAutor() 
+    {
         return $this->hasMany(Autor::className(), ['id_autor' => 'autor_id_autor'])->viaTable('autor_has_music', ['music_id_music' => 'id_music']);
     }
 
@@ -102,7 +97,7 @@ class Music extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|FavoriteMusicQuery
      */
-    public function getRel_favoriteMusics()
+    public function getRel_favorite_musics()
     {
         return $this->hasMany(FavoriteMusic::className(), ['music_id_music' => 'id_music']);
     }
