@@ -13,18 +13,8 @@ use yii\grid\SerialColumn;
         'dataProvider' => $dataProvider,
         'filterModel' => $filterModel,
         'layout' => "{items}\n{pager}",
-        'tableOptions' => ['class' => 'table table-hover table-sm table-borderless container'],
-        'rowOptions' => ['class' => 'table-light'],
-        'options' => ['class' => 'table-light'],
+        'tableOptions' => ['class' => 'table table-hover table-sm table-borderless container'],        
         'columns' => [
-//            [
-//                'class' => DataColumn::className(),
-//                'attribute' => 'id_music',
-//                'label' => '#',
-//                'value' => function($model, $key, $index) {
-//                    return $index+1;
-//                }
-//            ],
             ['class' => SerialColumn::className()],
             [
                 'class' => DataColumn::className(),
@@ -32,26 +22,25 @@ use yii\grid\SerialColumn;
                 'value' => function ($model, $key, $index, $column) {
                     return Html::a(
                         ucfirst($model->name_music), 
-                        Url::to(['/music/view', 'id' => $key, 'id_music' => $model->id_music])
+                        ['/music/view', 'id' => $key, 'id_music' => $model->id_music]
                     );
                 },
                 'format' => 'raw',
-
             ],
-            'name_style',
             [
-                'class' => DataColumn::className(),
-                'attribute' => 'autor_name_autor',
+                'attribute' => 'styleName',
+                'label' => 'Стиль',
+                'value' => 'rel_style.name_style',
+            ],            
+            [
+                'attribute' => 'autorName',//'autor_name_autor',
                 'format' => 'raw',
+                'label' => 'Исполнитель',
                 'value' => function ($model, $key, $index, $column) {
-                    return Html::a(Html::encode($model->autor_name_autor), Url::to(['/autor/view', 'id' => $model->autor_id_autor]));
+                    return Html::a(Html::encode($model->rel_autor->name_autor), ['/autor/view', 'id' => $model->rel_autor->id_autor]);
                 },
             ],
-            [
-                'class' => ActionButtons::className(),
-                'options' => ['style' => 'width: 150px;'],
-            ],
+            ['class' => ActionButtons::className(), 'options' => ['style' => 'width: 150px;']],
         ],
     ]); ?>
 </div>
-
