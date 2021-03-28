@@ -44,7 +44,7 @@ class MusicSearch extends Music
     public function search($params)
     {
         $query = Music::find();
-        $query->joinWith(['rel_autor'])
+        $query->joinWith(['autor'])
               ->joinWith(['rel_style']);
         // add conditions that should always apply here
 
@@ -53,8 +53,8 @@ class MusicSearch extends Music
         ]);
         
         $dataProvider->sort->attributes['autorName'] = [
-            'asc' => [Autor::tableName().'.name_autor' => SORT_ASC],
-            'desc' => [Autor::tableName().'.name_autor' => SORT_DESC],
+            'asc' => [Autor::tableName().'.name' => SORT_ASC],
+            'desc' => [Autor::tableName().'.name' => SORT_DESC],
         ];
         $dataProvider->sort->attributes['styleName'] = [
             'asc' => [MusicStyle::tableName().'.name_style' => SORT_ASC],
@@ -78,7 +78,7 @@ class MusicSearch extends Music
 
         $query->andFilterWhere(['like', 'name_music', $this->name_music])
             ->andFilterWhere(['like', MusicStyle::tableName().'.name_style', $this->styleName])
-            ->andFilterWhere(['like', Autor::tableName().'.name_autor', $this->autorName]);    
+            ->andFilterWhere(['like', Autor::tableName().'.name', $this->autorName]);    
 
         return $dataProvider;
     }

@@ -21,7 +21,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
                 <?php } ?>
                 <div class="card-body">
                     <h5 class="card-title">
-                        <?=Html::a(Html::encode($model->name_autor), ['/autor/view', 'id' => $model->id_autor], 
+                        <?=Html::a(Html::encode($model->name), ['/autor/view', 'id' => $model->id], 
                             ['class' => 'text-warning text-decoration-none'])?>
                     </h5>
                 </div>

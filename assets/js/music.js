@@ -1,27 +1,42 @@
-var audio = document.getElementById('audio_player');
+var audio;
+var src;
+var albumTrack;
+var isPaused;
+var audio = document.getElementById("audio_player");
+var src = 'http://basic/assets/musics/';
+var count = 0;
 
-function playClick(button) {
-    var content = button.parentElement.parentElement.childNodes[1];
-    var span = button.childNodes[0].classList; 
-    
-    audio.src = 'http://basic/assets/musics/'+button.value+'';
-
-    $('#label_play').text($(content).text());
-    
-    return audio.paused ? play(span) : pause(span);
-
-};
-
-function play(span) {
-    audio.play();  
-    span.add('glyphicon-pause');
-    span.remove('glyphicon-play');
+window.onload = function () {    
+    isPaused = true;
+    albumTrack = 0;
 }
 
-function pause(span) {
-    audio.pause();
-    span.add('glyphicon-play');
-    span.remove('glyphicon-pause');
+function playClick(button) {
+    var content = $(button.parentElement.parentElement.childNodes[1]).text();
+    var span = button.childNodes[0]; 
+    setAudioValues(button.value, content);
+    toggleBtn(span);
+    if (isPaused) {
+        audio.play();
+        isPaused = false;
+    } else {
+        audio.pause();
+        isPaused = true;
+    }
+
+}
+
+function setAudioValues(audioSrc, content) {
+    audio.src = src+''+audioSrc;
+    $('#label_play').text(content);
+}
+
+/**
+ * Переключает класс у тега span
+ * @param {string} span 
+ */
+function toggleBtn(span) {
+    $(span).toggleClass('oi-media-play oi-media-pause');
 }
 
 function plusClick() {
@@ -49,10 +64,57 @@ function viewClick() {
     
 }
 
-function deleteClick() {
-    
+/**
+ * Событие нажатия на кнопку
+ * @param {string} album HTML tag
+ */
+function albumClick(album) {
+    $.ajax({
+        url: 'index.php',
+        dataType: 'json',        
+        data: {"r": 'albums/load-music', "album_id": album.id},
+        success: function(data) {  
+            albumPlay(data);
+        },
+    });
 }
 
-function albumPlay(album) {
+/**
+ * Запускает воспроизведение альбома
+ * @param {array} list
+ */
+function albumPlay(album) { 
+    var paths = Object.values(album);
+    var names = Object.keys(album);
+
+    setAudioValues(paths[albumTrack], names[albumTrack]);  
+    audio.play();
     
+    let audioPlay = setInterval(function() {
+        let audioTime = Math.round(audio.currentTime);
+        let audioLength = Math.round(audio.duration);
+        if (audioTime == audioLength && albumTrack < paths.length) {
+            albumTrack++;
+            switchTrack(albumTrack, album);
+        } else if (albumTrack >= paths.length) {
+            albumTrack = 0;
+            switchTrack(albumTrack, album);
+        }
+    }, 10);
+    if (album.length < 1) {
+        clearInterval(audioPlay);
+    }
+}
+
+/**
+ * Переключает трек альбома
+ * @param {int} numTrack
+ * @param {array} playlist
+ */
+function switchTrack (numTrack, playlist) {
+    var names = Object.keys(playlist);
+    var paths = Object.values(playlist);
+    setAudioValues(paths[numTrack], names[numTrack]);
+    audio.currentTime = 0;
+    audio.play();
 }

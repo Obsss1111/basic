@@ -9,6 +9,8 @@ use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\AppAsset;
+use app\modules\Menu;
+use app\services\AccessService;
 
 AppAsset::register($this);
 ?>
@@ -29,7 +31,7 @@ AppAsset::register($this);
     <?php $this->beginBody() ?>
 
     <div class="wrap">
-        <?php
+        <?php       
         NavBar::begin([
             'brandLabel' => 'Триумф',
             'brandUrl' => Yii::$app->homeUrl,
@@ -44,33 +46,24 @@ AppAsset::register($this);
             ['label' => 'Любимая музыка', 'url' => ['/music/my-music']]
         ];
         if (Yii::$app->user->isGuest) {
-            $dropDown = Html::a('Регистрация', ['/site/signup'], ['class' => 'dropdown-item']) .
-                        Html::a('Авторизация', ['/site/login'], ['class' => 'dropdown-item']);
+            $dropDown = [
+                ['label' => 'Регистрация', 'url' => ['/site/signup']],
+                ['label' => 'Авторизация', 'url' => ['/site/login']]
+            ];
         } else {
-            $dropDown = Html::a('Личный кабинет', ['/user/index'], ['class' => 'dropdown-item'])
-                        . Html::beginForm(['/site/logout'], 'post')
-                        . Html::submitButton(
-                            'Выход (' . Yii::$app->user->identity->username . ')',
-                            ['class' => 'btn dropdown-item']
-                        )
-                        . Html::hiddenInput('label', Yii::$app->user->id, ['id' => 'username'])
-                        . Html::endForm();            
+            $dropDown = [
+                ['label' => 'Личный кабинет', 'url' => ['/user/index']],
+                Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton('Выход', ['class' => 'btn dropdown-item'])
+                . Html::hiddenInput('label', Yii::$app->user->id, ['id' => 'username'])
+                . Html::endForm(),
+            ];
         }
-        $menuItems[] = '<li class="nav-item dropdown">'
-                . Html::a(Yii::$app->user->isGuest ? 'Профиль' : "(".Yii::$app->user->identity->username.")", '#', [
-                    'id' => 'navbarDropdownMenuLink',
-                    'class' => 'nav-link dropdown-toggle',
-                    'data-toggle' => 'dropdown',
-                    'aria-haspopup' => true,
-                    'aria-expanded' => false,
-                ])  
-                . Html::beginTag('div', [
-                    'class' => 'dropdown-menu',
-                    'aria-labelledby' => 'navbarDropdownMenuLink',
-                ])
-                . $dropDown
-                . Html::endTag('div')
-                . '</li>';
+
+        $menuItems[] = [
+            'label' => Yii::$app->user->isGuest ? 'Профиль' : Yii::$app->user->identity->username,
+            'items' => $dropDown,
+        ];
         
         echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
@@ -79,42 +72,53 @@ AppAsset::register($this);
         NavBar::end();
         ?>
 
-        <div class="container">
+        <div class="container mb-4">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
-            <?= Alert::widget() ?>            
-            <?= $content ?>
+            <?= Alert::widget() ?>                                         
+            
+                <div class="row">
+                    <?php if (isset($this->params['menu']) && AccessService::hasAccess()): ?>
+                    <div class='col-md-10'><?= $content ?></div>
+                    <div class="col-md-2">
+                        <?= app\modules\Options::widget([
+                            'items' => isset($this->params['menu']) ? $this->params['menu'] : [],
+                            'itemOptions' => ['class' => 'list-group-item list-group-item-action'],
+                            'titleOptions' => ['class' => 'active']
+                        ]); ?>
+                    </div>
+                    <?php else: ?>
+                    <div class="col"><?= $content ?></div>
+                    <?php endif; ?>
+                </div> 
+                  
         </div>
     </div>
-    <?php $options = ['class' => 'footer', 'style' => 'z-index: 1000;']; 
-    if ($this->title != 'Главная страница') {    
-        $options['style'] .= " margin-top: 40px;";    
-    }
-    ?>
-    <?= Html::beginTag('footer', $options) ?>
-    <?php if ($this->title == 'Главная страница') { ?>    
-            <div class="container">
-                <div class="row row-cols-2">
+    <?php if ($this->title == 'Главная страница'): ?> 
+        <footer class="footer fixed-bottom">   
+        <div class="container">
+            <div class="row row-cols-2">
                 <div class="col col-sm-9">
                     <p>&copy; Смоленцев Д.Е. Выпускная квалификационная работа 2020-<?= date('Y') ?></p>
                 </div>
-                    <div class="col col-sm-3" style="text-align: right;">
+                <div class="col col-sm-3" style="text-align: right;">
                     <p><?= Yii::powered() ?></p>
                 </div>
-                </div>
             </div>
-    <?php } else { ?>
-            <div class="player">
-                <label id="label_play" style="text-align:center;" for="audio_player"></label>
-                <br>
-                <audio id="audio_player" style="width: 95%; margin: 10px 10px;" controls preload="auto" loop>
-                    <source src="" type="audio/ogg">
-                    <source src="" type="audio/mpeg">
-                </audio>
+        </div>
+        </footer>
+    <?php else: ?> 
+        <footer class="fixed-bottom">
+            <div class="container mt-5">
+                <div class="player">
+                    <label id="label_play" style="text-align:center;" for="audio_player"></label>
+                    <br>
+                    <audio id="audio_player" style="width: 95%; margin: 10px 10px;" controls preload="auto" loop/> 
+                </div>   
             </div>
-    <?php } ?>
-    <?= Html::endTag('footer') ?>
+        </footer>
+    <?php endif; ?>
 
     <?php $this->endBody() ?>
 </body>

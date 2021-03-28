@@ -18,7 +18,7 @@ class AlbumsMusicSearch extends AlbumsMusic
     public function rules()
     {
         return [
-            [['id_albums_music', 'id_autor_music', 'id_music_albums'], 'integer'],
+            [['am_id', 'album_id', 'ahm_id'], 'integer'],
         ];
     }
 
@@ -66,9 +66,9 @@ class AlbumsMusicSearch extends AlbumsMusic
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_albums_music' => $this->id_albums_music,
-            'id_autor_music' => $this->id_autor_music,
-            'id_music_albums' => $this->id_music_albums,
+            'am_id' => $this->am_id,
+            'album_id' => $this->album_id,
+            'ahm_id' => $this->ahm_id
         ]);
 
         return $dataProvider;

@@ -45,21 +45,10 @@ class Albums extends \yii\db\ActiveRecord
     {
         return [
             'id_album' => 'Id Album',
-            'name_album' => 'Альбом',
+            'name_album' => 'Name Album',
             'img' => 'Img',
-            'autor.name_autor' => 'Исполнитель'
         ];
     }
-    
-    public function getAutor()
-    {
-        return $this->hasOne(Autor::class, ['id_autor' => 'id_autor_music'])->viaTable(AlbumsMusic::tableName(), ['id_albums_music' => 'id_album']);
-    }
-    
-    public function getCountTracks() : int
-    {
-        return $this->hasMany(AlbumsMusic::className(), ['id_albums_music' => 'id_album'])->count();
-    }        
 
     /**
      * Gets query for [[AlbumsMusics]].
@@ -68,8 +57,21 @@ class Albums extends \yii\db\ActiveRecord
      */
     public function getAlbumsMusics()
     {
-        return $this->hasMany(AlbumsMusic::class, ['id_albums_music' => 'id_album']);
+        return $this->hasMany(AlbumsMusic::className(), ['album_id' => 'id_album']);
     }
+    
+    public function getAutor()
+    {
+        return $this->hasOne(Autor::className(), ['id' => 'album_id'])
+                ->viaTable('autor_has_music', ['autor_music' => 'autor_music'])
+                ->via('albumsMusics');
+    }
+    
+    public function getCountTracks() : int
+    {
+        return $this->hasMany(AutorHasMusic::className(), ['id_ahm' => 'ahm_id'])->
+                viaTable('albums_music', ['album_id' => 'id_album'])->count();
+    }  
 
     /**
      * Gets query for [[FavoriteAlbums]].
@@ -79,5 +81,5 @@ class Albums extends \yii\db\ActiveRecord
     public function getFavoriteAlbums()
     {
         return $this->hasMany(FavoriteAlbums::className(), ['albums_id_album' => 'id_album']);
-    }
+    }    
 }

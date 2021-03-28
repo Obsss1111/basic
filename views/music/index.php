@@ -14,9 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col">
             <?= Tabs::widget([
-                'itemOptions' => [
+                'itemOptions' => [                    
                     'style' => 'margin-top: 15px;'
                 ],
+                'headerOptions' => ['class' => 'flex-sm-fill text-sm-center'],
+                'navType' => 'nav-pills nav-fill',
                 'items' => [
                     [
                         'label' => 'Новое',
@@ -24,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'dataProvider' => $dataProvider,
                             'filterModel' => $searchModel
                         ]),
-                        'active' => true
+//                        'active' => true
                     ],
                     [
                         'label' => "Исполнители",
@@ -44,6 +46,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ]);
             ?>  
         </div>        
-        <?= $this->render('/layouts/menu', ['access' => $access]); ?>
     </div>
 </div>    

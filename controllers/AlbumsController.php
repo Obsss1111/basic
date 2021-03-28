@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\AlbumsMusicSearch;
 use app\services\AccessService;
+use app\models\AlbumsMusic;
+use app\models\Music;
 
 /**
  * AlbumsController implements the CRUD actions for Albums model.
@@ -39,7 +41,7 @@ class AlbumsController extends Controller
     {
         $searchModel = new AlbumsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -54,7 +56,7 @@ class AlbumsController extends Controller
      */
     public function actionView($id)
     {
-        $searchModel = new AlbumsMusicSearch(['id_albums_music' => $id]);
+        $searchModel = new AlbumsMusicSearch(['album_id' => $id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $carousel = [
                  [
@@ -165,4 +167,20 @@ class AlbumsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    /**
+     * Возвращает список id_music_albums указанного альбома
+     * @param int $id_album 
+     * @return array
+     */
+    public function actionLoadMusic($album_id)
+    {        
+        if (($models = AlbumsMusic::find()->where(['album_id' => $album_id])->all()) !== null) {  
+            $list = [];
+            foreach ($models as $model) {
+                $list[$model->music->name_music] = $model->music->rel_path->path;
+            }
+            return json_encode($list);
+        }                
+    }        
 }

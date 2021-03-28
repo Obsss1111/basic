@@ -6,8 +6,8 @@ use app\modules\ActionButtons;
 use yii\grid\DataColumn;
 use yii\helpers\Url;
 use yii\grid\SerialColumn;
-?>
 
+?>
 <div class="music-index">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,7 +37,7 @@ use yii\grid\SerialColumn;
                 'format' => 'raw',
                 'label' => 'Исполнитель',
                 'value' => function ($model, $key, $index, $column) {
-                    return Html::a(Html::encode($model->rel_autor->name_autor), ['/autor/view', 'id' => $model->rel_autor->id_autor]);
+                    return Html::a(Html::encode($model->autor->name), ['/autor/view', 'id' => $model->autor->id]);
                 },
             ],
             ['class' => ActionButtons::className(), 'options' => ['style' => 'width: 150px;']],

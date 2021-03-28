@@ -12,9 +12,9 @@ use Yii;
  * @property int|null $path_music_id_path
  * @property int|null $music_style_id_style
  *
- * @property Albums[] $rel_albums
- * @property AutorHasMusic[] $rel_autors
- * @property Autor[] $rel_autor
+ * @property Albums[] $albums
+ * @property AutorHasMusic[] $autorHasMusic
+ * @property Autor[] $autor
  * @property FavoriteMusic[] $favoriteMusics
  * @property PathMusic $rel_path
  * @property MusicStyle rel_style
@@ -62,7 +62,7 @@ class Music extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AlbumsQuery
      */
-    public function getRel_albums()
+    public function getAlbums()
     {
         return $this->hasMany(Albums::className(), ['music_id_music' => 'id_music']);
     }
@@ -72,7 +72,7 @@ class Music extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AutorHasMusicQuery
      */
-    public function getRel_autors()
+    public function getAutorHasMusic()
     {
         return $this->hasMany(AutorHasMusic::className(), ['music_id_music' => 'id_music']);
     }
@@ -82,14 +82,9 @@ class Music extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AutorQuery
      */
-    public function getRel_autor()
+    public function getAutor()
     {
-        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor'])->viaTable('autor_has_music', ['music_id_music' => 'id_music']);
-    }
-    
-    public function getNameAutor() 
-    {
-        return $this->hasMany(Autor::className(), ['id_autor' => 'autor_id_autor'])->viaTable('autor_has_music', ['music_id_music' => 'id_music']);
+        return $this->hasOne(Autor::className(), ['id' => 'id_autor'])->viaTable('autor_has_music', ['id_music' => 'id_music']);
     }
 
     /**

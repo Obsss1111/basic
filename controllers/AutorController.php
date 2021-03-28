@@ -53,12 +53,12 @@ class AutorController extends Controller
      */
     public function actionView($id)
     {
-        $filterModel = new MusicSearch();
-        $dataProvider = $filterModel->findMusic($id);
+        $searchModel = new AutorSearch(['id' => $id]);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
-            'filterModel' => $filterModel,
+            'filterModel' => $searchModel,
         ]);
     }
 

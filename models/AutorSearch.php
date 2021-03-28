@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Autor;
+use yii\data\Pagination;
 
 /**
  * AutorSearch represents the model behind the search form of `app\models\Autor`.
@@ -17,8 +18,8 @@ class AutorSearch extends Autor
     public function rules()
     {
         return [
-            [['id_autor'], 'integer'],
-            [['name_autor', 'img'], 'safe'],
+            [['id'], 'integer'],
+            [['name', 'img'], 'safe'],
         ];
     }
 
@@ -46,6 +47,9 @@ class AutorSearch extends Autor
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => new Pagination([
+                'pageSize' => 10
+            ])
         ]);
 
         $this->load($params);
@@ -58,10 +62,10 @@ class AutorSearch extends Autor
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_autor' => $this->id_autor,
+            'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name_autor', $this->name_autor])
+        $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'img', $this->img]);
 
         return $dataProvider;

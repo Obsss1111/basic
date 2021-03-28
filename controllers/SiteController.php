@@ -12,10 +12,7 @@ use app\models\ContactForm;
 use app\models\EntryForm;
 use app\models\User;
 use app\models\SignupForm;
-use Error;
-use app\models\MusicStyleSearch;
-use app\models\MusicSearch;
-use app\models\AutorSearch;
+use yii\helpers\Html;
 
 class SiteController extends Controller
 {
@@ -77,25 +74,46 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $filterModel = new MusicStyleSearch();
-        $dataProvider = $filterModel->search(Yii::$app->request->queryParams);
-        
-        $filterMusic = new MusicSearch();
-        $dataMusic = $filterMusic->search(Yii::$app->request->queryParams);
-        
-        $filterAutor = new AutorSearch();
-        $dataAutor = $filterAutor->search(Yii::$app->request->queryParams);
-        
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'filterModel' => $filterModel,
-            
-            'dataMusic' => $dataMusic,
-            'filterMusic' => $filterMusic,
-            
-            'dataAutor' => $dataAutor,
-            'filterAutor' => $filterAutor,
-        ]);
+        $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
+        $carousel = [
+            [
+               'content' => '<svg xmlns="http://www.w3.org/2000/svg" width="20rem" height="20rem" fill="currentColor" class="bi bi-music-note" viewBox="0 0 16 16">
+                    <path d="M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+                    <path fill-rule="evenodd" d="M9 3v10H8V3h1z"/>
+                    <path d="M8 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 13 2.22V4L8 5V2.82z"/>
+                </svg>',
+               'caption' => '<h1>'.
+                Html::a(Html::encode('Популярные треки'),
+                        ['music/index'],
+                        ['class' => 'text-decoration-none text-light'])
+                .'</h1>',
+               'options' => ['class' => $color[random_int(0, 3)]],
+            ],
+            [
+               'content' => '<svg xmlns="http://www.w3.org/2000/svg" width="20rem" height="20rem" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                    </svg>',
+               'caption' => '<h1>'.
+                Html::a(Html::encode('Популярные исполнители'),
+                        ['/music/index', '#' => 'w1-tab1'],
+                        ['class' => 'text-decoration-none text-light'])
+                .'</h1>',
+               'options' => ['class' => $color[random_int(0, 3)]],
+            ],
+            [
+               'content' => '<svg xmlns="http://www.w3.org/2000/svg" style="padding: 5px; width:20rem; height:20rem;"  fill="currentColor" class="bi bi-vinyl-fill card-img" viewBox="0 0 16 16">
+                                            <path d="M8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0z"/>
+                                        </svg>',
+               'caption' => '<h1>'.
+                Html::a(Html::encode('Популярные альбомы'),
+                        ['music/index'],
+                        ['class' => 'text-decoration-none text-light'])
+                .'</h1>',
+               'options' => ['class' => $color[random_int(0, 3)]],
+            ],
+        ];
+        return $this->render('index', ['carousel' => $carousel]);
     }
 
     /**

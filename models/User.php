@@ -20,7 +20,6 @@ use yii\web\IdentityInterface;
  * @property int $status
  * @property string $created_at
  * @property string $updated_at
- * @property int|null $autor_id_autor
  * @property int $access 
  *
  * @property FavoriteAlbums[] $favoriteAlbums
@@ -58,7 +57,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             [['username', 'auth_key', 'password_hash', 'created_at', 'updated_at'], 'required'],
-            [['status', 'autor_id_autor'], 'integer'],
+            [['status'], 'integer'],
             [['username', 'email'], 'string', 'max' => 32],
             [['auth_key', 'password_hash', 'passwork_reset_token', 'created_at', 'updated_at'], 'string', 'max' => 64],
             [['username'], 'unique'],

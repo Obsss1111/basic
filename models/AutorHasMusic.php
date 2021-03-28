@@ -7,11 +7,12 @@ use Yii;
 /**
  * This is the model class for table "autor_has_music".
  *
- * @property int $autor_id_autor
- * @property int $music_id_music
+ * @property int $id_ahm
+ * @property int $id_autor
+ * @property int $id_music
  *
- * @property Autor $rel_autor
- * @property Music $rel_music
+ * @property Autor $autor
+ * @property Music $music
  */
 class AutorHasMusic extends \yii\db\ActiveRecord
 {
@@ -29,11 +30,11 @@ class AutorHasMusic extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['autor_id_autor', 'music_id_music'], 'required'],
-            [['autor_id_autor', 'music_id_music'], 'integer'],
-            [['autor_id_autor', 'music_id_music'], 'unique', 'targetAttribute' => ['autor_id_autor', 'music_id_music']],
-            [['autor_id_autor'], 'exist', 'skipOnError' => true, 'targetClass' => Autor::className(), 'targetAttribute' => ['autor_id_autor' => 'id_autor']],
-            [['music_id_music'], 'exist', 'skipOnError' => true, 'targetClass' => Music::className(), 'targetAttribute' => ['music_id_music' => 'id_music']],
+            [['id_autor', 'id_music'], 'required'],
+            [['id_autor', 'id_music'], 'integer'],
+            [['id_autor', 'id_music'], 'unique', 'targetAttribute' => ['id_autor', 'id_music']],
+            [['id_autor'], 'exist', 'skipOnError' => true, 'targetClass' => Autor::className(), 'targetAttribute' => ['id_autor' => 'id']],
+            [['id_music'], 'exist', 'skipOnError' => true, 'targetClass' => Music::className(), 'targetAttribute' => ['id_music' => 'id_music']],
         ];
     }
 
@@ -43,37 +44,29 @@ class AutorHasMusic extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'autor_id_autor' => 'Autor Id Autor',
-            'music_id_music' => 'Music Id Music',
+            'id_ahm' => 'Id Ahm',
+            'id_autor' => 'Id Autor',
+            'id_music' => 'Id Music',
         ];
     }
 
     /**
-     * Gets query for [[AutorIdAutor]].
+     * Gets query for [[Autor]].
      *
-     * @return \yii\db\ActiveQuery|AutorQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getRel_Autor()
+    public function getAutor()
     {
-        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor']);
+        return $this->hasOne(Autor::className(), ['id' => 'id_autor']);
     }
 
     /**
-     * Gets query for [[MusicIdMusic]].
+     * Gets query for [[Music]].
      *
-     * @return \yii\db\ActiveQuery|MusicQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getRel_Music()
+    public function getMusic()
     {
-        return $this->hasOne(Music::className(), ['id_music' => 'music_id_music']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return AutorHasMusicQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new AutorHasMusicQuery(get_called_class());
+        return $this->hasOne(Music::className(), ['id_music' => 'id_music']);
     }
 }

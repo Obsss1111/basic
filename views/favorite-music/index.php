@@ -45,7 +45,7 @@ use app\modules\ActionButtons;
                 'label' => 'Исполнитель',
                 'format' => 'raw',
                 'value' => function($model) {
-                    return Html::a(Html::encode($model->rel_autor->name_autor), ['/autor/view', 'id' => $model->rel_autor->id_autor]);
+                    return Html::a(Html::encode($model->rel_autor->name), ['/autor/view', 'id' => $model->rel_autor->id]);
                 }
             ]
             

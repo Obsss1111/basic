@@ -70,8 +70,8 @@ class FavoriteMusic extends \yii\db\ActiveRecord
     
     public function getRel_autor() 
     {
-        return $this->hasOne(Autor::className(), ['id_autor' => 'autor_id_autor'])
-                    ->viaTable('autor_has_music', ['music_id_music' => 'music_id_music']);
+        return $this->hasOne(Autor::className(), ['id' => 'id_autor'])
+                    ->viaTable('autor_has_music', ['id_music' => 'music_id_music']);
     }
     
     public function addLikedMusic($music_id_music, $user_id) {
