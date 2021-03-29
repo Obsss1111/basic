@@ -10,6 +10,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
 <div class="autor-index">
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php foreach ($dataProvider->getModels() as $model) { ?>
+        <?php if ($model->countTracks): ?>
         <div class="col" style="margin-bottom: 20px;">
             <div class="card h-100 mb-3 bg-album" style="max-width: 20rem; max-height: 20rem;">
                 <?php if ($model->img) { ?>
@@ -30,6 +31,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
                 </div>
             </div>
         </div>
+        <?php endif; ?>
         <?php } ?>
     </div>
 </div>
