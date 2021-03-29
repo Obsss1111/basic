@@ -83,20 +83,17 @@ function albumClick(album) {
  * Запускает воспроизведение альбома
  * @param {array} list
  */
-function albumPlay(album) { 
-    var paths = Object.values(album);
-    var names = Object.keys(album);
-
-    setAudioValues(paths[albumTrack], names[albumTrack]);  
+function albumPlay(album) {     
+    var keys = Object.keys(album);
+    setAudioValues(album[keys[albumTrack]], keys[albumTrack]);
     audio.play();
-    
     let audioPlay = setInterval(function() {
         let audioTime = Math.round(audio.currentTime);
         let audioLength = Math.round(audio.duration);
-        if (audioTime == audioLength && albumTrack < paths.length) {
+        if (audioTime == audioLength && albumTrack < keys.length) {
             albumTrack++;
             switchTrack(albumTrack, album);
-        } else if (albumTrack >= paths.length) {
+        } else if (albumTrack >= keys.length) {
             albumTrack = 0;
             switchTrack(albumTrack, album);
         }
