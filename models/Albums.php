@@ -13,6 +13,7 @@ use Yii;
  *
  * @property AlbumsMusic[] $albumsMusics
  * @property FavoriteAlbums[] $favoriteAlbums
+ * @property Autor $autor
  */
 class Albums extends \yii\db\ActiveRecord
 {
@@ -55,16 +56,21 @@ class Albums extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAlbumsMusics()
+    public function getAlbumsMusic()
     {
         return $this->hasMany(AlbumsMusic::className(), ['album_id' => 'id_album']);
+    }    
+    
+    public function getAutorHasMusic()
+    {
+        return $this->hasMany(AutorHasMusic::className(), ['id_ahm' => 'ahm_id'])
+                ->via('albumsMusic');
     }
     
     public function getAutor()
     {
-        return $this->hasOne(Autor::className(), ['id' => 'album_id'])
-                ->viaTable('autor_has_music', ['autor_music' => 'autor_music'])
-                ->via('albumsMusics');
+        return $this->hasOne(Autor::className(), ['id' => 'id_autor'])
+                ->via('autorHasMusic');
     }
     
     public function getCountTracks() : int
