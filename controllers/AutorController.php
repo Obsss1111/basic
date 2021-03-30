@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\MusicSearch;
+use yii\helpers\Html;
+use yii\bootstrap4\Carousel;
 
 /**
  * AutorController implements the CRUD actions for Autor model.
@@ -55,10 +57,41 @@ class AutorController extends Controller
     {
         $searchModel = new AutorSearch(['id' => $id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = $this->findModel($id);
+        
+        $albums = [];
+        $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
+        $content = '<svg xmlns="http://www.w3.org/2000/svg" style="padding: 20px; width: 40%;" fill="currentColor" class="bi bi-vinyl-fill card-img-top" viewBox="0 0 16 16">
+                            <path d="M8 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 3a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0z"/>
+                        </svg>';
+        
+        foreach ($model->albums as $album) {
+            $albums[] = [
+                'content' => $content,
+                'caption' => Html::a(
+                        Html::tag('h1', $album->name_album), 
+                        ['albums/view', 'id' => $album->id_album], 
+                        ['class' => 'text-light text-decoration-none']),
+                'options' => ['class' => $color[random_int(0, 3)]]
+            ];
+            
+        } 
+
+        $carousel = Carousel::widget([
+            'items' => $albums,
+            'options' => [
+                'class' => "carousel slide", 
+                'data-bs-ride' => "carousel",
+                'style' => 'height: 100%;'
+            ],
+        ]);   
+        
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
+            'carousel' => $carousel,
         ]);
     }
 
