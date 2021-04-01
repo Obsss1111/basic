@@ -10,6 +10,10 @@ use Yii;
  * @property int $am_id
  * @property int $album_id
  * @property int $ahm_id
+ * 
+ * @property Music $music 
+ * @property Album $album
+ * @property AutorHasMusic $ahm
  */
 class AlbumsMusic extends \yii\db\ActiveRecord
 {
@@ -29,6 +33,9 @@ class AlbumsMusic extends \yii\db\ActiveRecord
         return [
             [['album_id', 'ahm_id'], 'required'],
             [['album_id', 'ahm_id'], 'integer'],
+            [['ahm_id'], 'unique'],
+            [['ahm_id'], 'exist', 'skipOnError' => true, 'targetClass' => AutorHasMusic::className(), 'targetAttribute' => ['ahm_id' => 'id_ahm']],
+            [['album_id'], 'exist', 'skipOnError' => true, 'targetClass' => Albums::className(), 'targetAttribute' => ['album_id' => 'id_album']],
         ];
     }
 
@@ -47,6 +54,16 @@ class AlbumsMusic extends \yii\db\ActiveRecord
     public function getMusic()
     {
         return $this->hasOne(Music::className(), ['id_music' => 'id_music'])
-                ->viaTable('autor_has_music', ['id_ahm' => 'ahm_id']);
+                ->via('ahm');
+    }
+    
+    public function getAlbum()
+    {
+        return $this->hasOne(Albums::className(), ['id_album' => 'album_id']);
+    }
+    
+    public function getAhm()
+    {
+        return $this->hasOne(AutorHasMusic::className(), ['id_ahm' => 'ahm_id']);
     }
 }

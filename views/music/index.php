@@ -24,7 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Новое',
                         'content' => $this->render('/music/music', [
                             'dataProvider' => $dataProvider,
-                            'filterModel' => $searchModel
+                            'filterModel' => $searchModel,
+                            'access' => $access
                         ]),
 //                        'active' => true
                     ],

@@ -11,6 +11,7 @@ use Yii;
  * @property int $id_autor
  * @property int $id_music
  *
+ * @property AlbumsMusic $albumsMusic
  * @property Autor $autor
  * @property Music $music
  */
@@ -48,6 +49,16 @@ class AutorHasMusic extends \yii\db\ActiveRecord
             'id_autor' => 'Id Autor',
             'id_music' => 'Id Music',
         ];
+    }
+
+    /**
+     * Gets query for [[AlbumsMusic]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAlbumsMusic()
+    {
+        return $this->hasOne(AlbumsMusic::className(), ['ahm_id' => 'id_ahm']);
     }
 
     /**

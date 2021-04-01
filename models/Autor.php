@@ -12,6 +12,7 @@ use Yii;
  * @property string|null $img
  *
  * @property AutorHasMusic[] $autorHasMusics
+ * @property Albums[] $albums
  */
 class Autor extends \yii\db\ActiveRecord
 {
@@ -56,24 +57,21 @@ class Autor extends \yii\db\ActiveRecord
     public function getAutorHasMusic()
     {
         return $this->hasMany(AutorHasMusic::className(), ['id_autor' => 'id']);
+    }   
+    
+    public function getAlbumsMusic()
+    {
+        return $this->hasMany(AlbumsMusic::className(), ['ahm_id' => 'id_ahm'])->via('autorHasMusic');
     }
     
     public function getAlbums()
     {
-        return $this->hasMany(Albums::className(), ['id_album' => 'album_id'])
-                ->viaTable('albums_music', ['ahm_id' => 'id_ahm'])
-                ->viaTable('autor_has_music', ['id_autor' => 'id']);
-    }
-    
+        return $this->hasMany(Albums::className(), ['id_album' => 'album_id'])->via('albumsMusic');
+    }   
+
     public function getCountTracks() : int
     {             
         return $this->getAutorHasMusic()->count();
-    }
-    
-    public function getAlbumsMusic()
-    {
-        $this->hasMany(AlbumsMusic::className(), ['ahm_id' => 'id_ahm'])
-                ->via('autorHasMusic');
     }
 
     public function getMusic()

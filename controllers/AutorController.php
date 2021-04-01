@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\MusicSearch;
 use yii\helpers\Html;
 use yii\bootstrap4\Carousel;
+use app\models\AutorHasMusicSearch;
 
 /**
  * AutorController implements the CRUD actions for Autor model.
@@ -55,7 +56,7 @@ class AutorController extends Controller
      */
     public function actionView($id)
     {
-        $searchModel = new AutorSearch(['id' => $id]);
+        $searchModel = new AutorHasMusicSearch(['id_autor' => $id]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = $this->findModel($id);
         

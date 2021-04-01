@@ -40,7 +40,13 @@ use yii\grid\SerialColumn;
                     return Html::a(Html::encode($model->autor->name), ['/autor/view', 'id' => $model->autor->id]);
                 },
             ],
-            ['class' => ActionButtons::className(), 'options' => ['style' => 'width: 150px;']],
+            [
+                'class' => ActionButtons::className(), 
+                'options' => ['style' => 'width: 15%;'],
+                'visibleButtons' => [
+                    'delete' => $access,                    
+                ],
+            ],
         ],
     ]); ?>
 </div>
