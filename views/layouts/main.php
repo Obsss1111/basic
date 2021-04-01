@@ -43,7 +43,7 @@ AppAsset::register($this);
         $menuItems = [
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Музыка', 'url' => ['/music/index']],
-            ['label' => 'Любимая музыка', 'url' => ['/music/my-music']]
+            ['label' => 'Моя музыка', 'url' => ['/music/my-music']]
         ];
         if (Yii::$app->user->isGuest) {
             $dropDown = [
