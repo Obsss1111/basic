@@ -77,12 +77,11 @@ class ActionButtons extends ActionColumn{
                     'aria-label' => $title,
                     'data-pjax' => '0',
                     'id' => $title.'_'.$key,
-                    'name' => "[$title]",
-                    'value' => $title == 'Play' && $model->id_music && $model->rel_path->id_path ? $model->rel_path->path : $key,
-                    'onclick' => strtolower($title) . 'Click(this)',
+                    'name' => strtolower($title),
+                    'value' => $model->path_music_id_path,
                     'class' => "btn action-btn",
                 ], $additionalOptions, $this->buttonOptions);
-                $icon = Html::tag('span', '', ['class' => "oi oi-$iconName"]);
+                $icon = Html::tag('span', '', ['class' => "oi oi-$iconName", 'name' => strtolower($title)]);
                 return Html::button($icon, $options);
             };
         }

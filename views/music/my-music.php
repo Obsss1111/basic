@@ -1,40 +1,40 @@
 <?php
-use yii\helpers\Html;
+use yii\bootstrap4\Html;
 use yii\bootstrap4\Tabs;
 
-$this->title = 'Любимая музыка';
+$this->title = 'Моя музыка';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="my-music">
     <div class="container">
-        <h1 style="margin-left: 10px;"><?= Html::encode($this->title) ?></h1> 
+        <h1><?= Html::encode($this->title) ?></h1> 
         <div class="row">
-            <div class="col">
-                <?= Tabs::widget([
-                    'items' => [                        
-                        [
-                            'label' => 'Любимая музыка',
-                            'content' => $this->render('/favorite-music/index',[
+            <?= Tabs::widget([
+                'navType' => 'flex-column nav-pills mb-3 col-md-2',
+                'tabContentOptions' => ['class' => 'col-md'],
+                'items' => [
+                    [
+                        'label' => 'Моя музыка',
+                        'content' => $this->render('/favorite-music/index',[
                                 'dataProvider' => $dataProviderFavoriteMusic,
                                 'filterModel' => $searchModelFaloriteMusic,
-                            ]),
-                            'active' => true,
-                        ],
-                        [
-                            'label' => 'Любимая альбомы',
-                            'content' => $this->render('/favorite-albums/index', [
-                                'dataProvider' => $dataProviderFavoriteAlbum,
-                                'filterModel' => $searchModelFavoriteAlbum,
-                            ]),
-                        ],
-                        [
-                            'label' => 'Любимые исполнители',
-                            'content' => 'DropdownB, Anim pariatur cliche...',
-                        ],
+                        ]),
                     ],
-                ]);
-                ?>  
-            </div>
+                    [
+                        'label' => 'Исполнители',
+                        'content' => $this->render('/autor/favorite-author', [
+                            'dataProvider' => $dataProviderFavoriteAuthor,
+                        ]),
+                    ],
+                    [
+                        'label' => 'Альбомы',
+                        'content' => $this->render('/albums/favorite-albums', [
+                            'dataProvider' => $dataProviderFavoriteAlbum,
+                            'filterModel' => $searchModelFavoriteAlbum,
+                        ]),
+                    ]
+                ]
+            ]); ?>
         </div>
     </div>    
 </div>

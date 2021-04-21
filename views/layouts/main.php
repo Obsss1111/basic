@@ -9,7 +9,7 @@ use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
 use yii\bootstrap4\Breadcrumbs;
 use app\assets\AppAsset;
-use app\modules\Menu;
+use app\modules\Options;
 use app\services\AccessService;
 
 AppAsset::register($this);
@@ -82,7 +82,7 @@ AppAsset::register($this);
                     <?php if (isset($this->params['menu']) && AccessService::hasAccess()): ?>
                     <div class='col-md-10'><?= $content ?></div>
                     <div class="col-md-2">
-                        <?= app\modules\Options::widget([
+                        <?= Options::widget([
                             'items' => isset($this->params['menu']) ? $this->params['menu'] : [],
                             'itemOptions' => ['class' => 'list-group-item list-group-item-action'],
                             'titleOptions' => ['class' => 'active']

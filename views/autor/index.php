@@ -1,9 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\grid\DataColumn;
-use yii\helpers\Url;
 
 $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
 ?>
@@ -14,7 +11,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
         <div class="col" style="margin-bottom: 20px;">
             <div class="card h-100 mb-3 bg-album" style="max-width: 20rem; max-height: 20rem;">
                 <?php if ($model->img) { ?>
-                    <img src="<?= 'http://basic/assets/img/'.$model->img ?>" class="card-img-top">
+                    <img src="<?= 'http://basic/assets/img/'.$model->img ?>" class="card-img-top">               
                 <?php } else { ?>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-fill <?= $color[random_int(0, 3)] ?>" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>

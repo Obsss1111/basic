@@ -32,7 +32,7 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
     <div class="row">
         <div class="col-md-3">
             <div class="row row-cols-md-1 g-4 justify-content-between">
-                <div class="card mb-3 h-100" style="width: 15rem;">                    
+                <div class="card mb-3" style="width: 15rem;">                    
                     <?php if ($model->img) { ?>
                     <?= Html::img('http://basic/assets/img/'.$model->img, ['class' => 'card-img-top']);?>
                     <?php } else { ?>
@@ -57,14 +57,16 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
                     </div>                    
                 </div>
                 
-                <div class="card h-100 mb-3" style="width: 15rem;">                
+                <div class="card mb-3" style="width: 15rem;"> 
+                    <div class="card-img">
                     <?= \yii\bootstrap4\Carousel::widget([
                         'items' => $carousel,
                         'options' => [
                             'class' => "carousel slide", 
                             'data-bs-ride' => "carousel", 
                         ],
-                    ]); ?>            
+                    ]); ?> 
+                    </div>
                     <div class="card-body">
                         <p class="card-text">Другие альбомы</p>
                     </div>
@@ -72,7 +74,7 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
             </div>      
         </div>
         <div class="col">
-            <div class="card h-100">                                                    
+            <div class="card mb-3">                                                    
                 <div class="card-body">
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,
@@ -95,9 +97,8 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
                                             'aria-label' => 'play',
                                             'data-pjax' => '0',
                                             'id' => 'play_'.$key,
-                                            'name' => "[play]",
-                                            'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,
-                                            'onclick' => 'playClick(this)',
+                                            'name' => 'play',
+                                            'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,                                         
                                             'class' => "btn action-btn",
                                         ];
                                         return Html::button($icon, $options);

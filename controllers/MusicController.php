@@ -18,6 +18,8 @@ use app\models\FavoriteAlbumsSearch;
 use app\models\FavoriteMusicSearch;
 use app\models\MusicRepository;
 use app\services\AccessService;
+use yii\bootstrap4\Tabs;
+use app\models\FavoriteAuthorsSearch;
 
 /**
  * MusicController implements the CRUD actions for Music model.
@@ -38,7 +40,7 @@ class MusicController extends Controller
 //                },
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout', 'my-music'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout', 'my-music', 'playlist'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -90,21 +92,26 @@ class MusicController extends Controller
     }
     
     /**
-     * Показывает все можели любимой музыки
+     * Показывает любимую музыку пользователя
      */
     public function actionMyMusic()
     {
         $searchModelFavoriteAlbum = new FavoriteAlbumsSearch();
         $dataProviderFavoriteAlbum = $searchModelFavoriteAlbum->search(Yii::$app->request->queryParams);
-        
+
         $searchModelFavoriteMusic = new FavoriteMusicSearch();
         $dataProviderFavoriteMusic = $searchModelFavoriteMusic->search(Yii::$app->request->queryParams);
         
+        $searchModelFavoriteAuthor = new FavoriteAuthorsSearch(['user_id' => Yii::$app->user->id]);
+        $dataProviderFavoriteAuthor = $searchModelFavoriteAuthor->search(Yii::$app->request->queryParams);
+
         return $this->render('my-music', [
-            'dataProviderFavoriteAlbum' =>$dataProviderFavoriteAlbum,
+            'dataProviderFavoriteAlbum' => $dataProviderFavoriteAlbum,
             'searchModelFavoriteAlbum' => $searchModelFavoriteAlbum,
             'dataProviderFavoriteMusic' => $dataProviderFavoriteMusic,
             'searchModelFavoriteMusic' => $searchModelFavoriteMusic,
+            'dataProviderFavoriteAuthor' => $dataProviderFavoriteAuthor,
+            'searchModelFavoriteAuthor' => $searchModelFavoriteAuthor,
         ]);
     }
     
@@ -181,6 +188,18 @@ class MusicController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    /**
+     * Выводит плейлист со всеми треками
+     */
+    public function actionPlaylist() {
+        $models = Music::find()->all();
+        $list = [];
+        foreach ($models as $model) {
+            $list[$model->path_music_id_path] = [$model->name_music => $model->rel_path->path];
+        }
+        return json_encode($list);
     }
 
     /**

@@ -12,9 +12,10 @@ use Yii;
  * @property int $albums_id_album
  *
  * @property User $user
- * @property Albums $albumsIdAlbum
+ * @property Albums $album
+ * @property AlbumsMusic $albumsMusic
  */
-class FavoriteAlbums extends \yii\db\ActiveRecord
+class FavoriteAlbums extends Albums
 {
     /**
      * {@inheritdoc}
@@ -64,7 +65,7 @@ class FavoriteAlbums extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery|AlbumsQuery
      */
-    public function getAlbumsIdAlbum()
+    public function getAlbum()
     {
         return $this->hasOne(Albums::className(), ['id_album' => 'albums_id_album']);
     }
@@ -76,5 +77,26 @@ class FavoriteAlbums extends \yii\db\ActiveRecord
     public static function find()
     {
         return new FavoriteAlbumsQuery(get_called_class());
+    }
+
+    public function getCountTracks() : int
+    {
+        return $this->hasMany(AutorHasMusic::className(), ['id_ahm' => 'ahm_id'])
+                ->via('albumsMusic')->count();
+    }  
+    
+    public function getMusic()
+    {
+        return $this->hasOne(Music::className(), ['id_music' => 'id_music'])->via('ahm');
+    }    
+    
+    public function getAhm()
+    {
+        return $this->hasOne(AutorHasMusic::className(), ['id_ahm' => 'ahm_id'])->via('albumsMusic');
+    }
+    
+    public function getAlbumsMusic()
+    {
+        return $this->hasMany(AlbumsMusic::className(), ['album_id' => 'albums_id_album']);
     }
 }

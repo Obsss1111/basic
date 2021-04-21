@@ -4,13 +4,13 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\FavoriteAlbums;
+use app\models\FavoriteAuthors;
 use Yii;
 
 /**
- * FavoriteAlbumsSearch represents the model behind the search form of `app\models\FavoriteAlbums`.
+ * FavoriteAuthorsSearch represents the model behind the search form of `app\models\FavoriteAuthors`.
  */
-class FavoriteAlbumsSearch extends FavoriteAlbums
+class FavoriteAuthorsSearch extends FavoriteAuthors
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,8 @@ class FavoriteAlbumsSearch extends FavoriteAlbums
     public function rules()
     {
         return [
-            [['id_fav_album', 'user_id', 'albums_id_album'], 'integer'],
+            [['id', 'user_id', 'autor_id'], 'integer'],
+            [['name'], 'string', 'max' => 20],
         ];
     }
 
@@ -40,13 +41,9 @@ class FavoriteAlbumsSearch extends FavoriteAlbums
      */
     public function search($params)
     {
-        $query = FavoriteAlbums::find()
-                ->joinWith(['user'])
-                ->where(['user.id' => Yii::$app->user->id]);
-         // grid filtering conditions
-        $query->andFilterWhere([           
-            'user_id' => $this->user_id, 
-        ]);
+        $query = FavoriteAuthors::find()
+            ->joinWith(['user'])
+            ->where(['user.id' => Yii::$app->user->id]);
 
         // add conditions that should always apply here
 
@@ -64,11 +61,13 @@ class FavoriteAlbumsSearch extends FavoriteAlbums
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_fav_album' => $this->id_fav_album,
+            'id' => $this->id,
+            'name' => $this->name,
             'user_id' => $this->user_id,
-            'albums_id_album' => $this->albums_id_album,
+            'autor_id' => $this->autor_id,
         ]);
 
         return $dataProvider;
     }
+        
 }

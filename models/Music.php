@@ -7,17 +7,17 @@ use Yii;
 /**
  * This is the model class for table "music".
  *
- * @property int $id_music
- * @property string $name_music
- * @property int|null $path_music_id_path
- * @property int|null $music_style_id_style
+ * @property int $id_music ид трека
+ * @property string $name_music название
+ * @property int|null $path_music_id_path ид пути файла
+ * @property int|null $music_style_id_style ид жанра
  *
- * @property Albums[] $albums
+ * @property Albums[] $albums альбомы
  * @property AutorHasMusic[] $autorHasMusic
- * @property Autor[] $autor
- * @property FavoriteMusic[] $favoriteMusics
- * @property PathMusic $rel_path
- * @property MusicStyle rel_style
+ * @property Autor[] $autor исполнитель
+ * @property FavoriteMusic[] $favoriteMusics любимые треки
+ * @property PathMusic $rel_path путь файла
+ * @property MusicStyle rel_style жанр
  */
 class Music extends \yii\db\ActiveRecord
 {

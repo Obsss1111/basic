@@ -24,7 +24,7 @@ use yii\grid\GridView;
                 'value' => function($model, $key, $index) {
                     $options = [
                         'class' => 'btn action-btn',
-                        'onclick' => 'playClick(this)',
+                        'name' => 'play',
                         'id' => 'Play_[' . ($index+1) .']',
                         'value' => $model->rel_music->rel_path->path
                     ];

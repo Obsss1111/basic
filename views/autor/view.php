@@ -73,9 +73,8 @@ $this->params['menu'] = [
                                             'aria-label' => 'play',
                                             'data-pjax' => '0',
                                             'id' => 'play_'.$key,
-                                            'name' => "[play]",
+                                            'name' => "play",
                                             'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,
-                                            'onclick' => 'playClick(this)',
                                             'class' => "btn action-btn",
                                         ];
                                         return Html::button($icon, $options);
