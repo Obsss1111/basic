@@ -74,7 +74,7 @@ $this->params['menu'] = [
                                             'data-pjax' => '0',
                                             'id' => 'play_'.$key,
                                             'name' => "play",
-                                            'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,
+                                            'value' => $model->music->path_music_id_path,
                                             'class' => "btn action-btn",
                                         ];
                                         return Html::button($icon, $options);
