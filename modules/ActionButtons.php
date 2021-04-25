@@ -78,7 +78,7 @@ class ActionButtons extends ActionColumn{
                     'data-pjax' => '0',
                     'id' => $title.'_'.$key,
                     'name' => strtolower($title),
-                    'value' => $model->path_music_id_path,
+                    'value' => strtolower($title) !== 'heart' ? $model->path_music_id_path : $model->id_music,
                     'class' => "btn action-btn",
                 ], $additionalOptions, $this->buttonOptions);
                 $icon = Html::tag('span', '', ['class' => "oi oi-$iconName", 'name' => strtolower($title)]);
