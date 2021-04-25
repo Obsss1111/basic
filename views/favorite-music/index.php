@@ -26,7 +26,7 @@ use yii\grid\GridView;
                         'class' => 'btn action-btn',
                         'name' => 'play',
                         'id' => 'Play_[' . ($index+1) .']',
-                        'value' => $model->rel_music->rel_path->path
+                        'value' => $model->rel_music->path_music_id_path
                     ];
                     $icon = Html::tag('span', '', ['class' => "oi oi-media-play"]);
                     return Html::button($icon, $options);
