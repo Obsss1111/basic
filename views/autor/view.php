@@ -86,9 +86,8 @@ $this->params['menu'] = [
                                             'aria-label' => 'heart',
                                             'data-pjax' => '0',
                                             'id' => 'heart_'.$key,
-                                            'name' => "[heart]",
+                                            'name' => "heart",
                                             'value' => $model->music->id_music,
-                                            'onclick' => 'heartClick(this)',
                                             'class' => "btn action-btn"
                                         ];
                                         return Html::button($icon, $options);
