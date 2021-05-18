@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\DetailView;
+use app\services\AccessService;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
@@ -13,7 +15,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>   
-    <img src="" width="250" height="250" alt="user_img"/>
-
+    <img src="" style="width:250px; height:250px;" alt="user_img" class="border"/>
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+            'id',
+            'username',
+            [
+                'attribute' => 'access',
+                'value' => AccessService::getUserAccess(),
+            ],
+        ],
+    ]); ?>
 
 </div>

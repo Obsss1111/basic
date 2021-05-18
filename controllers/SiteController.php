@@ -13,6 +13,8 @@ use app\models\EntryForm;
 use app\models\User;
 use app\models\SignupForm;
 use yii\helpers\Html;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -224,5 +226,25 @@ class SiteController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+    
+    /**
+     * Страница для загрузки файлов
+     * @return url
+     */
+    public function actionUpload()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                return $this->render('/user/index');
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
     }
 }

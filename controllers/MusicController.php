@@ -8,9 +8,6 @@ use app\models\MusicSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Html;
-use app\models\MusicQuery;
-use app\models\PathMusicQuery;
 use yii\filters\AccessControl;
 use app\models\AutorSearch;
 use app\models\AlbumsSearch;
@@ -18,7 +15,7 @@ use app\models\FavoriteAlbumsSearch;
 use app\models\FavoriteMusicSearch;
 use app\models\MusicRepository;
 use app\services\AccessService;
-use yii\bootstrap4\Tabs;
+use app\models\FavoriteMusic;
 use app\models\FavoriteAuthorsSearch;
 
 /**
@@ -40,7 +37,7 @@ class MusicController extends Controller
 //                },
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout', 'my-music', 'playlist'],
+                        'actions' => ['index', 'view', 'create', 'update', 'delete', 'logout', 'my-music', 'playlist', 'heart'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -174,6 +171,39 @@ class MusicController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+    
+    /**
+     * Создание записи любимой музыки
+     * @param string $id
+     */
+    public function actionHeart($id) 
+    {
+        $user = Yii::$app->user->id;
+        $model = FavoriteMusic::find()->where(['user_id' => $user, 'music_id_music' => $id])->one();
+        if (empty($model)) {
+            $model = new FavoriteMusic();
+            $model->music_id_music = (string) $id;
+            $model->user_id = (string) $user;
+            $model->save(false);            
+            return $model;
+        }
+    }
+    
+    /**
+     * Удаление записи любимой музыки
+     * @param int $id
+     */
+    public function actionDeleteHeart($id)
+    {
+        $this->findHeart($id)->delete();
+        return $this->refresh();
+    }
+    
+    public function findHeart($id) 
+    {
+        $user = Yii::$app->user->id;
+        return FavoriteMusic::find()->where(['user_id' => $user, 'music_id_music' => $id])->one();
     }
 
     /**

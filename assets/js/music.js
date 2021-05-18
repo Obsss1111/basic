@@ -7,8 +7,11 @@ $(function() {
     $("button[name='play']").on('click', function() {
         loadPlaylist(this);
     });
+    $("button[name='heart']").on('click', function(){
+        heartClick(this);
+    });
     $("button[name='album']").on('click', function(){
-        alert(this.id);
+        albumClick(this);
     });
 });
 
@@ -79,19 +82,14 @@ function plusClick() {
     
 }
 
-function heartClick(buttonHeart) {
-    var _music_id = document.getElementById(buttonHeart.id).value;
-    var _user_id = document.getElementById('username').value;
-    
+function heartClick(heart) {        
     $.ajax({
         url: 'index.php',
         type: 'get',
         dataType: 'json',
-        data: {r: 'favorite-music/heart-music', music_id_music: _music_id, user_id : _user_id},
+        data: {r: 'music/heart', id: heart.value},
         success: function(data) {
-            data.music_id_music = _music_id;
-            data.user_id = _user_id;
-            return data['music_id_music']+' '+data['user_id'];
+            return data;
         }
     });
 }
@@ -111,7 +109,7 @@ function albumClick(album) {
         data: {"r": 'albums/load-music', "album_id": album.id},
         success: function(data) {  
             albumPlay(data);
-        },
+        }
     });
 }
 

@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use yii\bootstrap4\LinkPager;
-use yii\grid\SerialColumn;
 use yii\grid\ActionColumn;
 
 /* @var $this yii\web\View */
@@ -16,7 +14,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
         <div class="col-md-8">
             <?php foreach ($dataProvider->getModels() as $model): ?> 
                 <?php if($model->countTracks): ?>            
-                    <button type="button" name="album" onclick="albumClick(this)" class="card mb-3 bg-light" id="<?= $model->albums_id_album ?>" style="max-width: 12rem; padding: 0px;">                        
+                    <button type="button" name="album" class="card mb-3 bg-light" id="<?= $model->albums_id_album ?>" style="max-width: 12rem; padding: 0px;">                        
                         <?php if ($model->album->img): ?>
                             <img src="<?= "http://basic/assets/img/{$model->album->img}" ?>" class="card-img-top <?= $color[random_int(0, 3)] ?>" />
                         <?php else: ?>
@@ -57,12 +55,10 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
         </div>
             <?= GridView::widget([
                 'options' => ['class' => 'col-md-4'],
-                'layout' => "{items}\n{pager}",
-                'pager' => ['class' => LinkPager::className()],
+                'layout' => "{items}",                
                 'tableOptions' => ['class' => 'table table-hover table-sm table-borderless container'],
                 'dataProvider' => $dataProvider,
-                'columns' => [
-                    ['class' => SerialColumn::className()],                
+                'columns' => [               
                             ['attribute' => 'music.name_music'],
                             [
                                 'class' => ActionColumn::className(),
@@ -77,7 +73,7 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
                                             'data-pjax' => '0',
                                             'id' => 'play_'.$key,
                                             'name' => 'play',
-                                            'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,                                         
+                                            'value' => $model->music->path_music_id_path,
                                             'class' => "btn action-btn",
                                         ];
                                         return Html::button($icon, $options);
@@ -91,7 +87,6 @@ $color = ['warm', 'bighead', 'orange-fun', 'hazel'];
                                             'id' => 'heart_'.$key,
                                             'name' => "[heart]",
                                             'value' => $model->music->id_music,
-                                            'onclick' => 'heartClick(this)',
                                             'class' => "btn action-btn"
                                         ];
                                         return Html::button($icon, $options);
