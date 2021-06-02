@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap4\Tabs;
-
+use app\modules\Options;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MusicSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -46,6 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]);
             ?>  
-        </div>        
+        </div>   
+        <div class="col-md-2">
+            <?= Options::widget([
+                'items' => [
+                    ['label' => 'Добавить трек', 'url' => ['/music/create']],
+                    ['label' => 'Добавить исполнителя', 'url' => ['/autor/create']],
+                    ['label' => 'Добавить альбом', 'url' => ['/albums/create']],
+                ],
+                'itemOptions' => ['class' => 'list-group-item list-group-item-action'],
+                'titleOptions' => ['class' => 'active']
+            ]); ?> 
+        </div>
     </div>
 </div>    
