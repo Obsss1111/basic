@@ -81,7 +81,7 @@ class Options extends \yii\bootstrap4\Widget {
     
     public function run() 
     {
-        echo Html::tag(Html::encode($this->mainTag), $this->renderItems(), $this->options);
+        echo Html::tag($this->mainTag, $this->renderItems(), $this->options);
     }
     protected function renderItems() 
     {
@@ -115,7 +115,7 @@ class Options extends \yii\bootstrap4\Widget {
         return strtr($template, [
             '{label}' => $item['label'],
             '{css}' => Html::renderTagAttributes($options),
-            '{attr}' => $item['lableOptions'],
+            '{attr}' => $item['labelOptions'],
         ]);
 
 
