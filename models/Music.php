@@ -37,7 +37,6 @@ class Music extends \yii\db\ActiveRecord
             [['name_music'], 'required'],
             [['path_music_id_path', 'music_style_id_style'], 'integer'],
             [['name_music'], 'string', 'max' => 45],
-            [['music_style_id_style'], 'unique'],
             [['path_music_id_path'], 'unique'],
             [['path_music_id_path'], 'exist', 'skipOnError' => true, 'targetClass' => PathMusic::className(), 'targetAttribute' => ['path_music_id_path' => 'id_path']],
             [['music_style_id_style'], 'exist', 'skipOnError' => true, 'targetClass' => MusicStyle::className(), 'targetAttribute' => ['music_style_id_style' => 'id_style']],
