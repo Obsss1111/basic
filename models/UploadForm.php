@@ -13,11 +13,17 @@ class UploadForm extends Model
      * @var UploadedFile[]
      */
     public $imageFiles;
+    
+    /**     
+     * @var UploadedFile[]
+     */
+    public $musicFiles;
 
     public function rules()
     {
         return [
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif', 'maxFiles' => 4],
+            [['musicFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'mp3', 'maxFiles' => 4],
         ];
     }
     
@@ -26,6 +32,18 @@ class UploadForm extends Model
         if ($this->validate()) { 
             foreach ($this->imageFiles as $file) {
                 $file->saveAs('@app/assets/img/' . $file->baseName . '.' . $file->extension);                
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function uploadTracks()
+    {
+         if ($this->validate()) { 
+            foreach ($this->musicFiles as $file) {
+                $file->saveAs('@app/assets/musics/' . $file->baseName . '.' . $file->extension);                
             }
             return true;
         } else {
