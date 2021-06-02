@@ -78,20 +78,9 @@ AppAsset::register($this);
             ]) ?>
             <?= Alert::widget() ?>                                         
             
-                <div class="row">
-                    <?php if (isset($this->params['menu']) && AccessService::hasAccess()): ?>
-                    <div class='col-md-10'><?= $content ?></div>
-                    <div class="col-md-2">
-                        <?= Options::widget([
-                            'items' => isset($this->params['menu']) ? $this->params['menu'] : [],
-                            'itemOptions' => ['class' => 'list-group-item list-group-item-action'],
-                            'titleOptions' => ['class' => 'active']
-                        ]); ?>
-                    </div>
-                    <?php else: ?>
-                    <div class="col"><?= $content ?></div>
-                    <?php endif; ?>
-                </div> 
+            <div class="row">                   
+                <div class="col"><?= $content ?></div>
+            </div> 
                   
         </div>
     </div>
