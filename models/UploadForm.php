@@ -14,16 +14,17 @@ class UploadForm extends Model
      */
     public $imageFiles;
     
-    /**     
-     * @var UploadedFile[]
+    /**
+     *
+     * @var UploadedFile
      */
-    public $musicFiles;
+    public $musicFile;
 
     public function rules()
     {
         return [
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif', 'maxFiles' => 4],
-            [['musicFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'mp3', 'maxFiles' => 4],
+            [['musicFile'], 'file', 'extensions' => 'mp3'],
         ];
     }
     
@@ -39,15 +40,16 @@ class UploadForm extends Model
         }
     }
     
-    public function uploadTracks()
-    {
-         if ($this->validate()) { 
-            foreach ($this->musicFiles as $file) {
-                $file->saveAs('@app/assets/musics/' . $file->baseName . '.' . $file->extension);                
-            }
-            return true;
-        } else {
-            return false;
+    public function uploadTrack($file)
+    {       
+        if ($file instanceof UploadedFile) {
+            $file->saveAs(\Yii::getAlias('@app').'/assets/musics/' . $file->name);
+            return true;     
         }
+        return false;
+    }
+    
+    function beforeValidate() {
+        return parent::beforeValidate();
     }
 }

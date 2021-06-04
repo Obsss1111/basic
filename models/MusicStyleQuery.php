@@ -31,4 +31,12 @@ class MusicStyleQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+    
+    public static function getList() : array
+    {
+        return MusicStyle::find()
+            ->select(['id_style as id', 'name_style as label', 'name_style as value'])
+            ->asArray()
+            ->all();        
+    }
 }

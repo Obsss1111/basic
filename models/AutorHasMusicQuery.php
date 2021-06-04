@@ -31,4 +31,12 @@ class AutorHasMusicQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+    
+    public static function getList() : array
+    {
+        return Autor::find()
+                ->select(['name as label', 'name as value', 'id as id'])
+                ->asArray()
+                ->all();
+    }
 }

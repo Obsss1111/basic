@@ -17,6 +17,10 @@ use app\models\MusicRepository;
 use app\services\AccessService;
 use app\models\FavoriteMusic;
 use app\models\FavoriteAuthorsSearch;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
+use app\models\PathMusic;
+use app\models\AutorHasMusic;
 
 /**
  * MusicController implements the CRUD actions for Music model.
@@ -63,7 +67,7 @@ class MusicController extends Controller
      */
     public function actionIndex()
     {
-        $this->updateIndex();
+//        $this->updateIndex();
         
         $searchModel = new MusicSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -143,13 +147,34 @@ class MusicController extends Controller
     public function actionCreate()
     {
         $model = new Music();
+        $file = new UploadForm();
+        $path = new PathMusic();
+        $author = new AutorHasMusic();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_music]);
-        }
+        if (Yii::$app->request->isPost && $file->load(Yii::$app->request->post())) {
+            $file->musicFile = UploadedFile::getInstance($file, 'musicFile');
+            if ($file->uploadTrack($file->musicFile)) {
+                $path->path = $file->musicFile;            
+                $path->save(false);
+            }
+        }                
+    
+        if ($model->load(Yii::$app->request->post())) {
+            if (isset($path->id_path))
+                $model->path_music_id_path = $path->id_path;
+            
+            if ($model->save()) {
+                $author->load(Yii::$app->request->post());
+                $author->id_music = $model->id_music;                
+                $author->save();
+                return $this->redirect(['view', 'id' => $model->id_music]);
+            }
+        }        
 
         return $this->render('create', [
             'model' => $model,
+            'file' => $file,
+            'author' => $author,
         ]);
     }
 
@@ -163,13 +188,34 @@ class MusicController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $file = new UploadForm();
+        $path = PathMusic::findOne(['id_path' => $model->path_music_id_path]);
+        $author = AutorHasMusic::findOne(['id_music' => $id]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_music]);
-        }
+        if (Yii::$app->request->isPost && $file->load(Yii::$app->request->post())) {
+            $file->musicFile = UploadedFile::getInstance($file, 'musicFile');
+            if ($file->uploadTrack($file->musicFile)) {
+                $path->path = $file->musicFile;            
+                $path->save(false);
+            }
+        }                
+               
+        if ($model->load(Yii::$app->request->post())) {
+            if (isset($path->id_path))
+                $model->path_music_id_path = $path->id_path;
+            
+            if ($model->save()) {
+                $author->load(Yii::$app->request->post());
+                $author->id_music = $model->id_music;                
+                $author->save();
+                return $this->redirect(['view', 'id' => $model->id_music]);
+            }
+        }        
 
         return $this->render('update', [
             'model' => $model,
+            'file' => $file,
+            'author' => $author,
         ]);
     }
     

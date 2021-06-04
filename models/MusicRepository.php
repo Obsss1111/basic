@@ -33,8 +33,6 @@ class MusicRepository extends Model {
             $music = new Music();
             $music->path_music_id_path = $id_path;
             $music->name_music = str_replace('.mp3', '', $path_music->path);
-            $music->autor_id_autor = $music->autorIdAutors->id_autor;
-            $music->autor_name_autor = $music->autorIdAutors->name_autor;
             $music->save(false);
             return $music;
         }
