@@ -64,7 +64,7 @@ $this->params['menu'] = [
                             [
                                 'class' => ActionColumn::className(),
                                 'header' => 'Управление',
-                                'template' => '{play}{heart}{delete}',
+                                'template' => '{play} {heart} {delete}',
                                 'buttons' => [
                                     'play' => function($url, $model, $key) {
                                         $icon = Html::tag('span', '', ['class' => 'oi oi-media-play']);
@@ -92,6 +92,21 @@ $this->params['menu'] = [
                                         ];
                                         return Html::button($icon, $options);
                                     },
+                                    'delete' => function($url, $model, $key) {
+                                        $icon = Html::tag('span', '', ['class' => 'oi oi-trash']);
+                                        $options = [
+                                            'title' => 'delete',
+                                            'aria-label' => 'delete',
+                                            'data-pjax' => '0',
+                                            'id' => 'delete_'.$key,
+                                            'name' => 'delete',
+                                            'value' => $model->music->id_music,
+                                            'class' => 'btn action-btn',
+                                            'data-confirm' => Yii::t('yii', 'Вы действительно хотите удалить запись?'),
+                                            'data-method' => 'post',
+                                        ];
+                                        return Html::a($icon, ['music/delete', 'id' => $model->music->id_music], $options);
+                                    }
                                 ],
                             ],
                         ],

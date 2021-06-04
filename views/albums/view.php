@@ -88,7 +88,7 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
                             [
                                 'class' => ActionColumn::className(),
                                 'header' => 'Управление',
-                                'template' => '{play}{heart}{delete}',
+                                'template' => '{play} {heart} {delete}',
                                 'buttons' => [
                                     'play' => function($url, $model, $key) {
                                         $icon = Html::tag('span', '', ['class' => 'oi oi-media-play']);
@@ -98,7 +98,7 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
                                             'data-pjax' => '0',
                                             'id' => 'play_'.$key,
                                             'name' => 'play',
-                                            'value' => $model->music->id_music && $model->music->rel_path->id_path ? $model->music->rel_path->path : $model->music->id_music,                                         
+                                            'value' => $model->music->id_music,                                         
                                             'class' => "btn action-btn",
                                         ];
                                         return Html::button($icon, $options);
@@ -117,24 +117,21 @@ $this->params['menu'][] = ['label' => 'Удалить', 'url' => ['delete', 'id'
                                         ];
                                         return Html::button($icon, $options);
                                     },
-//                                    'delete' => function($url, $model, $key) {
-//                                        $icon = Html::tag('span', '', ['class' => 'oi oi-trash']);
-//                                        $options = [
-//                                            'title' => 'delete',
-//                                            'aria-label' => 'delete',
-//                                            'data-pjax' => '0',
-//                                            'id' => 'delete'.$key,
-//                                            'name' => "[delete]",
-//                                            'value' => $model->id_music_albums,
-//                                            'class' => "btn action-btn",
-//                                            'data-confirm' => Yii::t('yii', 'Вы действительно хотите удалить запись?'),
-//                                            'data-method' => 'post',
-//                                        ];
-//                                        if (array('music_id_music' => $model->id_music_albums, 'user_id' => Yii::$app->user->id) === $model->rel_fav_music->getPrimaryKey()) {
-//                                            return Html::button($icon, $options);
-//                                        }
-//                                        return false;
-//                                    }
+                                    'delete' => function($url, $model, $key) {
+                                        $icon = Html::tag('span', '', ['class' => 'oi oi-trash']);
+                                        $options = [
+                                            'title' => 'delete',
+                                            'aria-label' => 'delete',
+                                            'data-pjax' => '0',
+                                            'id' => 'delete'.$key,
+                                            'name' => "[delete]",
+                                            'value' => $model->music->id_music,
+                                            'class' => "btn action-btn",
+                                            'data-confirm' => Yii::t('yii', 'Вы действительно хотите удалить запись?'),
+                                            'data-method' => 'post',
+                                        ];                                        
+                                        return Html::button($icon, $options);                                       
+                                    }
                                 ],
                             ],
                         ],

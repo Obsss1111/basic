@@ -31,4 +31,12 @@ class PathMusicQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+    
+    public static function getList() : array 
+    {
+        return PathMusic::find()
+            ->select(['id_path as id', 'path as label', 'path as value'])
+            ->asArray()
+            ->all();
+    }
 }
