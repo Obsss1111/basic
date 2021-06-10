@@ -32,10 +32,10 @@ class Albums extends \yii\db\ActiveRecord
     {
         return [
             [['id_album', 'name_album'], 'required'],
-            [['id_album'], 'integer'],
+            [['id_album', 'autor_id'], 'integer'],
             [['name_album'], 'string', 'max' => 45],
             [['img'], 'string', 'max' => 64],
-            [['id_album'], 'unique'],
+            [['id_album'], 'unique'],            
         ];
     }
 
@@ -45,9 +45,10 @@ class Albums extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_album' => 'Id Album',
-            'name_album' => 'Name Album',
-            'img' => 'Img',
+            'id_album' => 'ИД альбома',
+            'name_album' => 'Название альбома',
+            'img' => 'Файл картинки',
+            'autor_id' => 'ИД исполнителя',
         ];
     }
 

@@ -11,7 +11,6 @@ use yii\filters\VerbFilter;
 use app\models\AlbumsMusicSearch;
 use app\services\AccessService;
 use app\models\AlbumsMusic;
-use app\models\Music;
 
 /**
  * AlbumsController implements the CRUD actions for Albums model.
@@ -108,13 +107,18 @@ class AlbumsController extends Controller
     public function actionCreate()
     {
         $model = new Albums();
+        $author = new AlbumsMusic();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_album]);
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $author->load(Yii::$app->request->post())) {
+            $author->album_id = (int) $model->id_album;
+            if ($author->save()) {
+                return $this->redirect(['view', 'id' => $model->id_album]);
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'author' => $author,
         ]);
     }
 
@@ -182,5 +186,6 @@ class AlbumsController extends Controller
             }
             return json_encode($list);
         }                
-    }        
+    } 
+    
 }

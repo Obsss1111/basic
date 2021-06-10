@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Albums */
 
-$this->title = 'Create Albums';
-$this->params['breadcrumbs'][] = ['label' => 'Albums', 'url' => ['index']];
+$this->title = 'Добавить альбом';
+$this->params['breadcrumbs'][] = ['label' => 'Музыка', 'url' => ['music/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="albums-create">
@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'author' => $author,
+        'ahm' => $ahm,
     ]) ?>
 
 </div>
